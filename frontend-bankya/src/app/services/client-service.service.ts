@@ -12,6 +12,6 @@ export class ClientServiceService {
   constructor(private http: HttpClient) {}
 
   public getClients() {
-    return this.http.get<ClientModel>(this.url);
+    return this.http.get<ClientModel>(`${this.url}/all`);
   }
 }
