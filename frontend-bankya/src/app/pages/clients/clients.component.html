@@ -1,0 +1,33 @@
+<h1>Home component</h1>
+<table class="table table-sm">
+  <caption>Lista de usuarios</caption>
+  <thead>
+    <tr>
+      <th class="scope">Id</th>
+      <th class="scope">Nombre</th>
+      <th class="scope">Apellido</th>
+      <th class="scope">Email</th>
+      <th class="scope">Tipo de documento</th>
+      <th class="scope">Número de documento</th>
+      <th class="scope">Fecha de naciemiento</th>
+      <th class="scope">Fecha de creación</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients">
+      <td>{{client.client_id}}</td>
+      <td>{{client.client_name}}</td>
+      <td>{{client.client_lastname}}</td>
+      <td>{{client.client_email}}</td>
+      <td>{{client.client_document_type}}</td>
+      <td>{{client.client_document_number}}</td>
+      <td>{{client.client_birthday}}</td>
+      <td>{{client.client_created_at}}</td>
+      <td>
+        <button type="button" class="btn btn-success">
+          Editar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
