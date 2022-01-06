@@ -28,11 +28,11 @@ public class ClientModel {
 	@Column(length = 50, nullable = false)
 	private String client_document_number;
 
-	@Column(columnDefinition = "DATE")
+	@Column(columnDefinition = "DATE", nullable = false)
 	private String client_birthday;
 
-	@Column(columnDefinition = "TIMESTAMP")
-	private String client_created_ad;
+	@Column(columnDefinition = "TIMESTAMP", nullable = false)
+	private String client_created_at;
 
 	// Getters and setters
 
@@ -84,20 +84,20 @@ public class ClientModel {
 		this.client_document_number = client_document_number;
 	}
 
-	public String getClient_birtday() {
+	public String getClient_birthday() {
 		return client_birthday;
 	}
 
-	public void setClient_birtday(String client_birtday) {
+	public void setClient_birthday(String client_birtday) {
 		this.client_birthday = client_birtday;
 	}
 
-	public String getClient_created_ad() {
-		return client_created_ad;
+	public String getClient_created_at() {
+		return client_created_at;
 	}
 
-	public void setClient_created_ad(String client_created_ad) {
-		this.client_created_ad = client_created_ad;
+	public void setClient_created_at(String client_created_ad) {
+		this.client_created_at = client_created_ad;
 	}
 
 }
