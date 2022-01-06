@@ -2,8 +2,11 @@ package com.bankya.rest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bankya.dao.ProductDao;
-import com.bankya.models.ClientModel;
 import com.bankya.models.ProductModel;
+import com.bankya.services.ProductService;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
@@ -26,38 +28,56 @@ import com.bankya.models.ProductModel;
 public class ProductRest {
 
 	@Autowired
-	private ProductDao productdao;
+	private ProductService productService;
 
-	@PostMapping("/add")
-	public void addProduct(@RequestBody ProductModel product) {
-		System.out.println("Clientttteee:" + product.getClient_id().getClient_id().intValue());
-		productdao.save(product);
+	@PostMapping
+	public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel product) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
 	}
 
-	@GetMapping("/all")
+	@GetMapping
 	public List<ProductModel> getAll() {
-		return productdao.findAll();
+		List<ProductModel> lProduct = StreamSupport.stream(productService.findAll().spliterator(), false)
+				.collect(Collectors.toList());
+		return lProduct;
 	}
 
-	@GetMapping("/id/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<ProductModel> getClientById(@PathVariable("id") Integer id) {
-		Optional<ProductModel> cm = productdao.findById(id);
-		if (cm.isPresent()) {
-			return ResponseEntity.ok().body(cm.get());
-		} else {
+		Optional<ProductModel> oProduct = productService.findById(id);
+		if (!oProduct.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(oProduct.get());
+
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<ProductModel> editClient(@RequestBody ProductModel product, @PathVariable("id") Integer id) {
+		Optional<ProductModel> oProduct = productService.findById(id);
+		if (!oProduct.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 
-	}
+		oProduct.get().setProduct_type(product.getProduct_type());
+		oProduct.get().setProduct_number(product.getProduct_number());
+		oProduct.get().setProduct_ammount(product.getProduct_ammount());
+		oProduct.get().setProduct_state(product.getProduct_state());
 
-	@PutMapping("/edit")
-	public void editClient(@RequestBody ProductModel product) {
-		productdao.save(product);
+		System.out.println("oProduct: " + oProduct);
+		System.out.println("oProduct: " + oProduct.get());
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteClient(@PathVariable("id") Integer id) {
-		productdao.deleteById(id);
+	public ResponseEntity<ProductModel> deleteClient(@PathVariable("id") Integer id) {
+		if (!productService.findById(id).isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		productService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 }

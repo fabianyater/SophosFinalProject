@@ -2,8 +2,11 @@ package com.bankya.rest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bankya.dao.OperationDao;
 import com.bankya.models.OperationModel;
+import com.bankya.models.ProductModel;
+import com.bankya.services.OperationService;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
@@ -25,37 +30,56 @@ import com.bankya.models.OperationModel;
 public class OperationRest {
 
 	@Autowired
-	private OperationDao operationdao;
+	private OperationService operationService;
 
-	@PostMapping("/add")
-	public void addOperation(@RequestBody OperationModel operation) {
-		operationdao.save(operation);
+	@PostMapping
+	public ResponseEntity<OperationModel> addOperation(@RequestBody OperationModel operation) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(operationService.save(operation));
 	}
 
-	@GetMapping("/all")
+	@GetMapping
 	public List<OperationModel> getAll() {
-		return operationdao.findAll();
+		List<OperationModel> lOperation = StreamSupport.stream(operationService.findAll().spliterator(), false)
+				.collect(Collectors.toList());
+		return lOperation;
 	}
 
-	@GetMapping("/id/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<OperationModel> getOperationById(@PathVariable("id") Integer id) {
-		Optional<OperationModel> cm = operationdao.findById(id);
-		if (cm.isPresent()) {
-			return ResponseEntity.ok().body(cm.get());
-		} else {
+		Optional<OperationModel> oOperation = operationService.findById(id);
+		if (!oOperation.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 
+		return ResponseEntity.ok().body(oOperation.get());
+
 	}
 
-	@PutMapping("/edit")
-	public void editOperation(@RequestBody OperationModel operation) {
-		operationdao.save(operation);
+	@PutMapping("/{id}")
+	public ResponseEntity<OperationModel> editOperation(@RequestBody OperationModel operation,
+			@PathVariable("id") Integer id) {
+		Optional<OperationModel> oOperation = operationService.findById(id);
+
+		if (!oOperation.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		oOperation.get().setOperation_date(operation.getOperation_date());
+		oOperation.get().setOperation_description(operation.getOperation_description());
+		oOperation.get().setOperation_type(operation.getOperation_type());
+		oOperation.get().setOperation_value(operation.getOperation_value());
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(operationService.save(oOperation.get()));
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteOperation(@PathVariable("id") Integer id) {
-		operationdao.deleteById(id);
+	public ResponseEntity<OperationModel> deleteClient(@PathVariable("id") Integer id) {
+		if (!operationService.findById(id).isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		operationService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 }
