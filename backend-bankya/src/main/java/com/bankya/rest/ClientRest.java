@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankya.dao.ClientDao;
-import com.bankya.model.ClientModel;
+import com.bankya.models.ClientModel;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController

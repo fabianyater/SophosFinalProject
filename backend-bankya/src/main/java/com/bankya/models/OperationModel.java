@@ -1,4 +1,4 @@
-package com.bankya.model;
+package com.bankya.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
