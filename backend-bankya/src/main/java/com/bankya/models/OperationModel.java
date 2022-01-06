@@ -1,6 +1,5 @@
 package com.bankya.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class OperationModel {
@@ -28,7 +29,8 @@ public class OperationModel {
 	@Column(length = 150)
 	private String operation_description;
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties(value = { "product_type", "product_number", "product_state", "product_ammount" })
 	private ProductModel product_id;
 
 	// Getters and setter
