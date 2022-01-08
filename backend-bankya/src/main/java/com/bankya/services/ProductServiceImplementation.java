@@ -28,13 +28,18 @@ public class ProductServiceImplementation implements ProductService {
 	}
 
 	@Override
-	public ProductModel save(ProductModel client) {
-		return productDao.save(client);
+	public ProductModel save(ProductModel product) {
+		return productDao.save(product);
 	}
 
 	@Override
 	public void deleteById(int id) {
 		productDao.deleteById(id);
+	}
+
+	@Override
+	public Iterable<ProductModel> findClientProducts(Integer id) {
+		return productDao.findClientProducts(id);
 	}
 
 }

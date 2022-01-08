@@ -9,7 +9,9 @@ public interface ProductService {
 
 	public Optional<ProductModel> findById(int id);
 
-	public ProductModel save(ProductModel client);
+	public ProductModel save(ProductModel product);
 
 	public void deleteById(int id);
+	
+	public Iterable<ProductModel> findClientProducts(Integer id);
 }
