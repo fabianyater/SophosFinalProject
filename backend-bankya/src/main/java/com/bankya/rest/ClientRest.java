@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankya.models.ClientModel;
+import com.bankya.models.ProductModel;
 import com.bankya.services.ClientService;
+
+import exceptions.HandleException;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
@@ -36,28 +39,31 @@ public class ClientRest {
 	}
 
 	@GetMapping
-	public List<ClientModel> getAllClients() {
+	public Iterable<ClientModel> getAllClients() {
 
-		List<ClientModel> lClient = StreamSupport.stream(clientService.findAll().spliterator(), false)
-				.collect(Collectors.toList());
-		return lClient;
+		/*
+		 * List<ClientModel> lClient =
+		 * StreamSupport.stream(clientService.findAll().spliterator(), false)
+		 * .collect(Collectors.toList());
+		 */
+		return clientService.findAll();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ClientModel> getClientById(@PathVariable("id") Integer id) {
+	public ResponseEntity<ClientModel> getClientById(@PathVariable("id") Integer id) throws HandleException {
 		Optional<ClientModel> oClient = clientService.findById(id);
 		if (!oClient.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Cliente no encontrado");
 		}
 		return ResponseEntity.ok().body(oClient.get());
 
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> editClient(@RequestBody ClientModel client, @PathVariable("id") Integer id) {
+	public ResponseEntity<?> editClient(@RequestBody ClientModel client, @PathVariable("id") Integer id) throws HandleException {
 		Optional<ClientModel> oClient = clientService.findById(id);
 		if (!oClient.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Cliente no encontrado, no se puede modificar");
 		}
 
 		// BeanUtils.copyProperties(client, oClient.get()); Copia todo el objeto
@@ -75,9 +81,17 @@ public class ClientRest {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteClient(@PathVariable("id") Integer id) {
+	public ResponseEntity<?> deleteClient(@PathVariable("id") Integer id) throws HandleException {
+
+		List<String> oState = clientService.findClientProductsState(id);
+
 		if (!clientService.findById(id).isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Cliente no encontrado");
+		}
+
+		if (oState.contains("A") || oState.contains("I")) {
+			throw new HandleException("No se puede eliminar un cliente con productos vigentes");
+			//return ResponseEntity.badRequest().build();
 		}
 
 		clientService.deleteById(id);

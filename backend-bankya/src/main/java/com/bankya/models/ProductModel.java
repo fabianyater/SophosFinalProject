@@ -1,5 +1,6 @@
 package com.bankya.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,7 @@ public class ProductModel {
 	@Column(length = 10, nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
 	private Double product_ammount;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JsonIgnoreProperties(value = { "client_name", "client_lastname", "client_email", "client_birthday",
 			"client_created_at", "client_document_type", "client_document_number" })
 	private ClientModel client_id;

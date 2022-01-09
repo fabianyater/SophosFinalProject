@@ -1,5 +1,6 @@
 package com.bankya.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,11 @@ public class ClientServiceImplementation implements ClientService {
 	@Override
 	public void deleteById(int id) {
 		clientDao.deleteById(id);
+	}
+
+	@Override
+	public List<String> findClientProductsState(Integer id) {
+		return clientDao.findClientProductsState(id);
 	}
 
 }

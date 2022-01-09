@@ -1,5 +1,6 @@
 package com.bankya.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,15 +29,26 @@ public class OperationModel {
 
 	@Column(length = 150)
 	private String operation_description;
+	
+	@Column(length = 50)
+	private Integer account_number;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JsonIgnoreProperties(value = { "product_type", "product_number", "product_state", "product_ammount" })
 	private ProductModel product_id;
 
 	// Getters and setter
-
+	
 	public Integer getOperation_id() {
 		return operation_id;
+	}
+
+	public Integer getAccount_number() {
+		return account_number;
+	}
+
+	public void setAccount_number(Integer account_number) {
+		this.account_number = account_number;
 	}
 
 	public ProductModel getProduct_id() {

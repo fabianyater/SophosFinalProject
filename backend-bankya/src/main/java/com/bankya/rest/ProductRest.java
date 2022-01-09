@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bankya.models.ProductModel;
 import com.bankya.services.ProductService;
 
+import exceptions.HandleException;
+
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
 @RequestMapping("api/v1/products")
@@ -31,10 +33,11 @@ public class ProductRest {
 	private ProductService productService;
 
 	@PostMapping
-	public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel product) {
+	public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel product) throws HandleException {
 		if (product.getProduct_ammount() < 0) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			throw new HandleException("No se puede agregar un producto con saldo menor a cero(0)");
 		}
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
 	}
 
@@ -47,20 +50,20 @@ public class ProductRest {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ProductModel> getProuctById(@PathVariable("id") Integer id) {
+	public ResponseEntity<ProductModel> getProuctById(@PathVariable("id") Integer id) throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
 		if (!oProduct.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Producto no encontrado");
 		}
 
 		return ResponseEntity.ok().body(oProduct.get());
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ProductModel> editProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id) {
+	public ResponseEntity<ProductModel> editProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id) throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
 		if (!oProduct.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Producto no encontrado. No se puede modificar");
 		}
 
 		oProduct.get().setProduct_type(product.getProduct_type());
@@ -72,10 +75,10 @@ public class ProductRest {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ProductModel> deleteProduct(@PathVariable("id") Integer id) {
+	public ResponseEntity<ProductModel> deleteProduct(@PathVariable("id") Integer id) throws HandleException {
 
 		if (!productService.findById(id).isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Producto no encontrado. No se puede eliminar");
 		}
 
 		productService.deleteById(id);
@@ -93,16 +96,16 @@ public class ProductRest {
 
 	@PutMapping("/{id}/cancel")
 	public ResponseEntity<ProductModel> cancelProduct(@RequestBody ProductModel product,
-			@PathVariable("id") Integer id) {
+			@PathVariable("id") Integer id) throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
-		System.out.println("Id del producto: " + oProduct.get().getProduct_id());
 		if (!oProduct.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new HandleException("Producto no encontrado. No se puede cancelar");
 		}
+		
+		System.out.println(oProduct.get().getProduct_ammount());
 
 		if (oProduct.get().getProduct_ammount() > 0) {
-			System.out.println("Debe retirar el dinero primero");
-			return ResponseEntity.badRequest().build();
+			throw new HandleException("No puede cancelar un producto con saldo mayor a cero (0). Debe retirar el dinero primero");
 		}
 
 		oProduct.get().setProduct_state(product.getProduct_state());

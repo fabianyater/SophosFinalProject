@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bankya.dao.OperationDao;
 import com.bankya.models.OperationModel;
+import com.bankya.models.ProductModel;
 
 @Service
 public class OperationServiceImplementation implements OperationService {
@@ -22,7 +23,7 @@ public class OperationServiceImplementation implements OperationService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<OperationModel> findById(int id) {
+	public Optional<OperationModel> findById(Integer id) {
 		return operationDao.findById(id);
 	}
 
@@ -35,5 +36,36 @@ public class OperationServiceImplementation implements OperationService {
 	public void deleteById(int id) {
 		operationDao.deleteById(id);
 	}
+
+	@Override
+	public void substractAmmount(Integer id, Double value) {
+		operationDao.substractAmmount(id, value);
+	}
+
+	@Override
+	public Double findBalance(Integer id) {
+		return operationDao.findBalance(id);
+	}
+
+	@Override
+	public void addAmmount(Integer id, Double value) {
+		operationDao.addAmmount(id, value);
+	}
+
+	@Override
+	public Integer findIdByAccountNumber(Integer id) {
+		return operationDao.findIdByAccountNumber(id);
+	}
+
+	@Override
+	public String findProductType(Integer id) {
+		return operationDao.findProductType(id);
+	}
+
+	@Override
+	public String findProductState(Integer id) {
+		return operationDao.findProductState(id);
+	}
+
 
 }
