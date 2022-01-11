@@ -25,7 +25,7 @@ import com.bankya.services.ClientService;
 
 import exceptions.HandleException;
 
-@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
 @RestController
 @RequestMapping("api/v1/clients")
 public class ClientRest {

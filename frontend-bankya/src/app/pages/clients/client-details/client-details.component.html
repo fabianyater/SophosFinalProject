@@ -1,0 +1,43 @@
+<nav class="navbar">
+  <div class="container-fluid" *ngIf="client">
+    <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
+      <button class="btn btn-success" (click)="back()">Volver a lista de clientes</button>
+      <h3 style="margin: 0 0 0 10px;">{{client.client_name}} {{client.client_lastname}}</h3>
+    </ul>
+    <div class="d-flex padding: 0;">
+      <h3 style="margin: 0;">Productos</h3>
+    </div>
+  </div>
+</nav>
+
+<div class="row my-4">
+  <div class="col-md-12">
+    <form (ngSubmit)="onSubmit()" [formGroup]="_form">
+      <div class="mb-3">
+        <label for="ammount" class="form-label">Monto</label>
+        <input type="number" formControlName="product_ammount" class="form-control"
+          [ngClass]="{'is-invalid': form['product_ammount'].errors}" id="ammount">
+        <div *ngIf="form['product_ammount'].errors" class="invalid-feedback">
+          <div *ngIf="form['product_ammount'].errors['required']">El monto es obligatorio</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="account" class="form-label">Número de cuenta</label>
+        <input type="number" formControlName="product_number" class="form-control"
+          [ngClass]="{'is-invalid': form['product_number'].errors}" id="account">
+        <div *ngIf="form['product_number'].errors" class="invalid-feedback">
+          <div *ngIf="form['product_number'].errors['required']">El número de cuenta es obligatorio</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="_type" class="form-label">Estado de cuenta</label>
+        <input type="text" formControlName="product_type" class="form-control"
+          [ngClass]="{'is-invalid': form['product_type'].errors}" id="_type">
+        <div *ngIf="form['product_type'].errors" class="invalid-feedback">
+          <div *ngIf="form['product_type'].errors['required']">El tipo de cuenta es obligatorio</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success" [disabled]="_form.invalid">Registrar producto</button>
+    </form>
+  </div>
+</div>

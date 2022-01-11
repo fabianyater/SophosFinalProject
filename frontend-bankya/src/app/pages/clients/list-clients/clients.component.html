@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-3">
+    <router-outlet></router-outlet>
+  </div>
+  <button *ngIf="!true" class="visible"></button>
+  <div class="col-9">
+    <div class="navbar">
+      <h1>Clientes</h1>
+      <a class="btn btn-outline-success" [routerLink]="'/clients/add'">Crear nuevo registro</a>
+    </div>
+    <div *ngIf="clients.length == 0;else tableClients">
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Sin registros</h4>
+        <p>No hay clientes registrados en el sistema. Intenta registrar en el formulario de registros.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #tableClients>
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Tipo de documento</th>
+        <th scope="col">Número de documento</th>
+        <th scope="col">Fecha de naciemiento</th>
+        <th scope="col">Fecha de creación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients; let i = index">
+        <td>{{client.client_name}} {{client.client_lastname}}</td>
+        <td>{{client.client_email}}</td>
+        <td>{{client.client_document_type}}</td>
+        <td>{{client.client_document_number}}</td>
+        <td>{{client.client_birthday}}</td>
+        <td>{{client.client_created_at}}</td>
+        <td>
+          <button class="btn btn-outline-primary" (click)="goTo(client.client_id)">Detalle</button>
+        </td>
+        <td>
+          <button class="btn btn-outline-danger" (click)="deleteClient(client)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

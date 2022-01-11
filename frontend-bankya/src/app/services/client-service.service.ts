@@ -11,7 +11,26 @@ export class ClientServiceService {
 
   constructor(private http: HttpClient) {}
 
-  public getClients() {
-    return this.http.get<ClientModel>(`${this.url}/all`);
+  public addClient(client: ClientModel) {
+    return this.http.post<ClientModel>(`${this.url}/clients`, client);
   }
+
+  public getClients() {
+    return this.http.get<ClientModel>(`${this.url}/clients`);
+  }
+
+  public getClientById(id: number) {
+    return this.http.get<ClientModel>(`${this.url}/clients/${id}`);
+  }
+
+  public deleteClient(id: number) {
+    return this.http.delete<ClientModel>(`${this.url}/clients/${id}`);
+  }
+
+  public editClient(client: ClientModel){
+    return this.http.put<ClientModel>(`${this.url}/clients`, client);
+  }
+
+  
+
 }
