@@ -2,6 +2,7 @@ package com.bankya.rest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,7 +25,7 @@ import com.bankya.services.ProductService;
 
 import exceptions.HandleException;
 
-@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
 @RestController
 @RequestMapping("api/v1/products")
 public class ProductRest {
@@ -34,9 +35,8 @@ public class ProductRest {
 
 	@PostMapping
 	public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel product) throws HandleException {
-		if (product.getProduct_ammount() < 0) {
-			throw new HandleException("No se puede agregar un producto con saldo menor a cero(0)");
-		}
+		int random = (int)(Math.random()*10000000+1000000);
+		product.setProduct_number(random);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
 	}

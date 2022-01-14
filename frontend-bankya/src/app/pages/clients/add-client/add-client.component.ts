@@ -1,6 +1,7 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { ClientModel } from 'src/app/models/client-model';
 import { ClientServiceService } from 'src/app/services/client-service.service';
 
@@ -10,15 +11,21 @@ import { ClientServiceService } from 'src/app/services/client-service.service';
   styleUrls: ['./add-client.component.css'],
 })
 export class AddClientComponent implements OnInit {
-  registerForm!: FormGroup;
-  submitted: boolean = false;
+  datePipe: DatePipe = new DatePipe('en-En');
+  formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
   arrayClient: Array<ClientModel> = [];
+  submitted: boolean = false;
+  registerForm!: FormGroup;
   client!: ClientModel;
+  public documents = [
+    { type: 'Cédula de ciudadanía' },
+    { type: 'Cédula Extranjería' },
+    { type: 'Pasaporte' },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
-    private clientService: ClientServiceService,
-    private router: Router
+    private clientService: ClientServiceService
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +36,7 @@ export class AddClientComponent implements OnInit {
       client_document_type: ['', Validators.required],
       client_document_number: ['', Validators.required],
       client_birthday: ['', Validators.required],
-      client_created_at: ['', Validators.required],
+      client_created_at: this.formattedDate,
     });
   }
 
@@ -42,9 +49,7 @@ export class AddClientComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-    this.clientService.addClient(this.registerForm.value).subscribe((resp) => {
-      console.log('Respuestaaaaaaaaa: ', resp);
-    });
+    this.clientService.addClient(this.registerForm.value).subscribe();
     location.href = '/';
   }
 

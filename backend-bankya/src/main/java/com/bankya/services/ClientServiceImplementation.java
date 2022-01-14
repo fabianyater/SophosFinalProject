@@ -44,4 +44,9 @@ public class ClientServiceImplementation implements ClientService {
 		return clientDao.findClientProductsState(id);
 	}
 
+	@Override
+	public List<String> findDocumentType() {
+		return clientDao.findDocumentType();
+	}
+
 }

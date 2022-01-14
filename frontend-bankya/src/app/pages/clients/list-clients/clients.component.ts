@@ -10,6 +10,7 @@ import { ClientServiceService } from 'src/app/services/client-service.service';
 export class ClientsComponent implements OnInit {
   public clients: Array<ClientModel> = [];
   public errorMessage!: string;
+  public error: boolean = false;
 
   constructor(
     public clientService: ClientServiceService,
@@ -22,14 +23,7 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  deleteClient(client: ClientModel) {
-    this.clientService.deleteClient(client.client_id).subscribe(() => {
-      this.errorMessage = `El cliente ${client.client_name} ${client.client_lastname} fue eliminado correctamente`;
-    });
-    location.href = '/';
-  }
-
   goTo(id: number) {
-    this.router.navigate([`/clients/${id}`]);
+    this.router.navigate([`/client/${id}/products`]);
   }
 }

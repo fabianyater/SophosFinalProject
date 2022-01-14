@@ -28,6 +28,6 @@ export class ProductService {
   }
 
   public getClientProductsById(id: number) {
-    return this.http.get<ProductModel>(`${this.url}/client/${id}`);
+    return this.http.get<ProductModel>(`${this.url}/products/client/${id}`);
   }
 }

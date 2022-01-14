@@ -6,6 +6,7 @@ import { ClientsComponent } from './list-clients/clients.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { AddClientComponent } from './add-client/add-client.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StatePipePipe } from 'src/app/pipes/state-pipe.pipe';
 
 const routes: Routes = [
   {
@@ -16,11 +17,11 @@ const routes: Routes = [
       { path: 'clients/add', component: AddClientComponent },
     ],
   },
-  { path: 'clients/:id', component: ClientDetailsComponent },
+  { path: 'client/:id/products', component: ClientDetailsComponent },
 ];
 
 @NgModule({
-  declarations: [ClientsComponent, ClientDetailsComponent, AddClientComponent],
+  declarations: [ClientsComponent, ClientDetailsComponent, AddClientComponent, StatePipePipe],
   imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],
 })
 export class ClientModule {}

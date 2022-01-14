@@ -11,4 +11,7 @@ import com.bankya.models.ClientModel;
 public interface ClientDao extends JpaRepository<ClientModel, Integer> {
 	@Query("SELECT p.product_state FROM client c INNER JOIN product p ON c.client_id = p.client_id WHERE c.client_id = :id")
 	List<String> findClientProductsState(@Param("id") Integer id);
+	
+	@Query("SELECT c.client_document_type from client c")
+	List<String> findDocumentType();
 }

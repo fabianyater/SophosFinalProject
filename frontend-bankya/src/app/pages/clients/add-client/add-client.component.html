@@ -28,8 +28,10 @@
       </div>
       <div class="mb-3">
         <label for="document" class="form-label">Tipo documento</label>
-        <input type="text" formControlName="client_document_type" class="form-control"
+        <select formControlName="client_document_type" class="form-control"
           [ngClass]="{'is-invalid': form['client_document_type'].errors}" id="document">
+          <option *ngFor="let doc of documents" [ngValue]="doc.type">{{doc.type}}</option>
+        </select>
         <div *ngIf="form['client_document_type'].errors" class="invalid-feedback">
           <div *ngIf="form['client_document_type'].errors['required']">El tipo de documento es obligatorio</div>
         </div>
@@ -48,14 +50,6 @@
           [ngClass]="{'is-invalid': form['client_birthday'].errors}" id="birthday">
         <div *ngIf="form['client_birthday'].errors" class="invalid-feedback">
           <div *ngIf="form['client_birthday'].errors['required']">La fecha de nacimiento es obligatoria</div>
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="created_at" class="form-label">Fecha creación</label>
-        <input type="datetime-local" formControlName="client_created_at" class="form-control"
-          [ngClass]="{'is-invalid': form['client_birthday'].errors}" id="birthday">
-        <div *ngIf="form['client_created_at'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_created_at'].errors['required']">La fecha de creación es obligatoria</div>
         </div>
       </div>
       <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Registrar cliente</button>

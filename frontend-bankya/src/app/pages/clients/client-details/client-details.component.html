@@ -2,42 +2,95 @@
   <div class="container-fluid" *ngIf="client">
     <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
       <button class="btn btn-success" (click)="back()">Volver a lista de clientes</button>
-      <h3 style="margin: 0 0 0 10px;">{{client.client_name}} {{client.client_lastname}}</h3>
+      <h1 style="margin: 0 10px 0 10px;">{{client.client_name | uppercase}} {{client.client_lastname | uppercase}}</h1>
+      <button class="btn btn-outline-danger enabled" [ngClass]="{'disabled': products.length > 0}"
+        data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Eliminar cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ¿Eliminar de manera definital al cliente {{client.client_name}} {{client.client_lastname}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" (click)="deleteClient(client.client_id)">Eliminiar</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </ul>
     <div class="d-flex padding: 0;">
-      <h3 style="margin: 0;">Productos</h3>
+      <h2 style="margin: 0;">PRODUCTOS</h2>
     </div>
   </div>
 </nav>
+<div class="row">
 
-<div class="row my-4">
-  <div class="col-md-12">
-    <form (ngSubmit)="onSubmit()" [formGroup]="_form">
-      <div class="mb-3">
-        <label for="ammount" class="form-label">Monto</label>
-        <input type="number" formControlName="product_ammount" class="form-control"
-          [ngClass]="{'is-invalid': form['product_ammount'].errors}" id="ammount">
-        <div *ngIf="form['product_ammount'].errors" class="invalid-feedback">
-          <div *ngIf="form['product_ammount'].errors['required']">El monto es obligatorio</div>
-        </div>
+  <div class="col-3">
+    <div class="row my-4">
+      <div class="col-md-12">
+        <form [formGroup]="_form">
+          <div class="mb-3">
+            <label for="_type" class="form-label">Tipo de cuenta</label>
+            <select formControlName="product_type" class="form-control"
+              [ngClass]="{'is-invalid': form['product_type'].errors}" id="_type">
+              <option [ngValue]="1" disabled>Seleccionar tipo de cuenta</option>
+              <option *ngFor="let type of types" [ngValue]="type.type">{{type.type}}</option>
+            </select>
+            <div *ngIf="form['product_type'].errors" class="invalid-feedback">
+              <div *ngIf="form['product_type'].errors['required']">El tipo de cuenta es obligatorio</div>
+            </div>
+          </div>
+          <button class="btn btn-success" (click)="onSubmit()" [disabled]="_form.invalid"> Enviar </button>
+          <!-- <button type="submit" class="btn btn-success" [disabled]="_form.invalid">Registrar producto</button> -->
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="account" class="form-label">Número de cuenta</label>
-        <input type="number" formControlName="product_number" class="form-control"
-          [ngClass]="{'is-invalid': form['product_number'].errors}" id="account">
-        <div *ngIf="form['product_number'].errors" class="invalid-feedback">
-          <div *ngIf="form['product_number'].errors['required']">El número de cuenta es obligatorio</div>
-        </div>
+    </div>
+  </div>
+  <div class="row col-9">
+    <div *ngIf="products.length == 0;else productCards">
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No hay productos</h4>
+        <p>Intenta registrar un nuevo producto.</p>
       </div>
-      <div class="mb-3">
-        <label for="_type" class="form-label">Estado de cuenta</label>
-        <input type="text" formControlName="product_type" class="form-control"
-          [ngClass]="{'is-invalid': form['product_type'].errors}" id="_type">
-        <div *ngIf="form['product_type'].errors" class="invalid-feedback">
-          <div *ngIf="form['product_type'].errors['required']">El tipo de cuenta es obligatorio</div>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-success" [disabled]="_form.invalid">Registrar producto</button>
-    </form>
+    </div>
   </div>
 </div>
+
+<ng-template #productCards>
+  <div class="col-sm-6" *ngFor="let products of products;">
+    <div class="card w-100" [ngClass]="{
+        'l-bg-blue-dark': products.product_type === 'Cuenta Corriente', 
+        'l-bg-green-dark': products.product_type === 'Cuenta Ahorros'
+      }" style="width: 18rem;">
+      <div class="card-body">
+        <div>
+          <div class="custom">
+            <h2 class="card-title m-0">Cuenta</h2>
+            <h2 class="card-subtitle m-0">Estado</h2>
+          </div>
+          <div class="custom mb-4">
+            <h3 class="card-title m-0">{{products.product_type | slice: 7}} <span> <strong>
+                  #{{products.product_number}}</strong></span>
+            </h3>
+            <h3 class="card-subtitle m-0">{{products.product_state | statePipe}}</h3>
+          </div>
+        </div>
+        <div>
+          <h4 class="card-subtitle m-0 text-end">Saldo disponible</h4>
+          <h2 href="#" class="card-title m-0 text-end">{{products.product_ammount | currency}}</h2>
+        </div>
+        <hr>
+        <div class="text-center">
+          <a [ngClass]="{'text-muted': products.product_type === 'Cancelado'}" routerLink="['']"
+            class="text-light fs-5">Ver movimientos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

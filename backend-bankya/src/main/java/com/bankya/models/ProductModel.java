@@ -30,6 +30,9 @@ public class ProductModel {
 	@Column(length = 10, nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
 	private Double product_ammount;
 
+	@Column(nullable = false)
+	private String product_created_at;
+
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JsonIgnoreProperties(value = { "client_name", "client_lastname", "client_email", "client_birthday",
 			"client_created_at", "client_document_type", "client_document_number" })
@@ -39,6 +42,14 @@ public class ProductModel {
 
 	public Integer getProduct_id() {
 		return product_id;
+	}
+
+	public String getProduct_created_at() {
+		return product_created_at;
+	}
+
+	public void setProduct_created_at(String product_created_at) {
+		this.product_created_at = product_created_at;
 	}
 
 	public void setProduct_id(Integer product_id) {

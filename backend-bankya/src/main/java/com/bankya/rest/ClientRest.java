@@ -84,6 +84,8 @@ public class ClientRest {
 	public ResponseEntity<?> deleteClient(@PathVariable("id") Integer id) throws HandleException {
 
 		List<String> oState = clientService.findClientProductsState(id);
+		
+		System.out.println("Estado: " + oState.toString());
 
 		if (!clientService.findById(id).isPresent()) {
 			throw new HandleException("Cliente no encontrado");
@@ -96,5 +98,10 @@ public class ClientRest {
 
 		clientService.deleteById(id);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/documents")
+	public List<String> getDocumentTypes() {
+		return clientService.findDocumentType();
 	}
 }

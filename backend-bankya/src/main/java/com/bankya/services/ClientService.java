@@ -17,4 +17,6 @@ public interface ClientService {
 	public void deleteById(int id);
 	
 	public List<String> findClientProductsState(Integer id);
+	
+	public List<String> findDocumentType();
 }

@@ -1,11 +1,11 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe, Location } from '@angular/common';
 
 import { ClientModel } from 'src/app/models/client-model';
 import { ClientServiceService } from 'src/app/services/client-service.service';
 import { ProductModel } from 'src/app/models/product.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -14,10 +14,15 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./client-details.component.css'],
 })
 export class ClientDetailsComponent implements OnInit {
+  public datePipe: DatePipe = new DatePipe('en-En');
+  public stringFormat: string = 'yyyy-MM-dd hh:mm:ss';
+  public formattedDate = this.datePipe.transform(new Date(), this.stringFormat);
+  public products: Array<ProductModel> = [];
   public client: ClientModel | undefined;
-  _form!: FormGroup;
-  submitted: boolean = false;
-  arrayProduct: Array<ProductModel> = [];
+  public error: boolean = false;
+  public submitted: boolean = false;
+  public _form!: FormGroup;
+  public types = [{type: 'Cuenta Corriente'}, {type: 'Cuenta Ahorros'}]
 
   constructor(
     public clientService: ClientServiceService,
@@ -29,16 +34,22 @@ export class ClientDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getClientById(this.route.snapshot.paramMap.get('id'));
+
     this._form = this.formBuilder.group({
-      product_ammount: ['', Validators.required],
-      product_number: ['', Validators.required],
+      product_ammount: 0,
       product_type: ['', Validators.required],
       product_state: 'A',
+      product_created_at: this.formattedDate,
       client_id: {
         client_id: Number(this.route.snapshot.paramMap.get('id')),
       },
     });
-    console.log(Number(this.route.snapshot.paramMap.get('id')));
+
+    this.productService
+      .getClientProductsById(Number(this.route.snapshot.paramMap.get('id')))
+      .subscribe((resp: any) => {
+        this.products = resp;
+      });
   }
 
   get form() {
@@ -47,24 +58,15 @@ export class ClientDetailsComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+
     if (this._form.invalid) {
       return;
     }
 
-    console.log(JSON.stringify(this._form.value));
-    this.productService.addProduct(this._form.value).subscribe((resp) => {
-      console.log('producto: ', resp);
-    });
-    //location.href = `/clients/${this._form.value['id']}`;
-  }
-
-  onReset() {
-    this.submitted = false;
-    this._form.reset();
-  }
-
-  back() {
-    this.location.back();
+    this.productService.addProduct(this._form.value).subscribe();
+    location.href = `/client/${Number(
+      this.route.snapshot.paramMap.get('id')
+    )}/products`;
   }
 
   getClientById(id: any): void {
@@ -76,5 +78,31 @@ export class ClientDetailsComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  deleteClient(clientId: number) {
+    console.log('Id recibido: ', clientId);
+    this.productService.getClientProductsById(clientId).subscribe((resp) => {
+      if (resp.product_state == 'A' || resp.product_state == 'I') {
+        console.log('Estado: ', resp.product_state);
+        return (location.href = `/client/${Number(
+          this.route.snapshot.paramMap.get('id')
+        )}`);
+      } else {
+        return this.clientService.deleteClient(clientId).subscribe(() => {});
+      }
+    });
+    location.href = `/client/${Number(
+      this.route.snapshot.paramMap.get('id')
+    )}/products`;
+  }
+
+  onReset() {
+    this.submitted = false;
+    this._form.reset();
+  }
+
+  back() {
+    this.location.back();
   }
 }
