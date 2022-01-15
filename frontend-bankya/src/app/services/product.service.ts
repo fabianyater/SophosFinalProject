@@ -30,4 +30,8 @@ export class ProductService {
   public getClientProductsById(id: number) {
     return this.http.get<ProductModel>(`${this.url}/products/client/${id}`);
   }
+
+  public updateProductState(product: number) {
+    return this.http.put<number>(`${this.url}/products/edit`, product);
+  }
 }

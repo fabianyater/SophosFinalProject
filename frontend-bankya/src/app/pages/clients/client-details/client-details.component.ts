@@ -2,10 +2,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { ClientModel } from 'src/app/models/client-model';
 import { ClientServiceService } from 'src/app/services/client-service.service';
-import { ProductModel } from 'src/app/models/product.model';
+import { nose, ProductModel } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -22,7 +23,11 @@ export class ClientDetailsComponent implements OnInit {
   public error: boolean = false;
   public submitted: boolean = false;
   public _form!: FormGroup;
-  public types = [{type: 'Cuenta Corriente'}, {type: 'Cuenta Ahorros'}]
+  public updateForm!: FormGroup;
+  public types = [{ type: 'Cuenta Corriente' }, { type: 'Cuenta Ahorros' }];
+  public states = [{ state: 'Inactivo', key: 'I' }, { state: 'Activo', key: 'A' }];
+  public icon = faEdit;
+  public idproduct!: number;
 
   constructor(
     public clientService: ClientServiceService,
@@ -45,10 +50,15 @@ export class ClientDetailsComponent implements OnInit {
       },
     });
 
+    this.updateForm = this.formBuilder.group({
+      product_state: ['', Validators.required]
+    });
+
     this.productService
       .getClientProductsById(Number(this.route.snapshot.paramMap.get('id')))
       .subscribe((resp: any) => {
         this.products = resp;
+        console.log('cliente: ', resp);
       });
   }
 
@@ -67,6 +77,19 @@ export class ClientDetailsComponent implements OnInit {
     location.href = `/client/${Number(
       this.route.snapshot.paramMap.get('id')
     )}/products`;
+  }
+
+  onUpdateSubmit(id: number) {
+    this.submitted;
+
+    if (this.updateForm.invalid) {
+      return;
+    }
+
+    console.log(id);
+
+    this.productService.updateProductState(id)
+
   }
 
   getClientById(id: any): void {
@@ -92,9 +115,7 @@ export class ClientDetailsComponent implements OnInit {
         return this.clientService.deleteClient(clientId).subscribe(() => {});
       }
     });
-    location.href = `/client/${Number(
-      this.route.snapshot.paramMap.get('id')
-    )}/products`;
+    location.href = '/';
   }
 
   onReset() {

@@ -14,4 +14,6 @@ public interface ProductService {
 	public void deleteById(int id);
 	
 	public Iterable<ProductModel> findClientProducts(Integer id);
+	
+	public Optional<ProductModel> updateProductState(Integer id, String value);
 }

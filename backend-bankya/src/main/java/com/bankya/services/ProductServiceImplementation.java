@@ -42,4 +42,9 @@ public class ProductServiceImplementation implements ProductService {
 		return productDao.findClientProducts(id);
 	}
 
+	@Override
+	public Optional<ProductModel> updateProductState(Integer id, String value) {
+		return productDao.updateProductState(id, value);
+	}
+
 }

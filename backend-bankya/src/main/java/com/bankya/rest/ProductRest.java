@@ -112,4 +112,13 @@ public class ProductRest {
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
 	}
+	
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<ProductModel> updateProductState(@RequestBody ProductModel product, @PathVariable("id") Integer id){
+		Optional<ProductModel> oProduct = productService.findById(id);
+		
+		oProduct.get().setProduct_state(product.getProduct_state());
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
+	}
 }

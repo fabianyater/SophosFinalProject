@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ClientsComponent } from './list-clients/clients.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
@@ -22,6 +23,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ClientsComponent, ClientDetailsComponent, AddClientComponent, StatePipePipe],
-  imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],
+  imports: [CommonModule, FontAwesomeModule, RouterModule.forChild(routes), ReactiveFormsModule],
 })
 export class ClientModule {}

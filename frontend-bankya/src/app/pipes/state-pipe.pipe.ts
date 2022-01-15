@@ -11,7 +11,7 @@ export class StatePipePipe implements PipeTransform {
       this.message = 'Activo';
     }
     if (value === 'I') {
-      this.message = 'Ictivo';
+      this.message = 'Inactivo';
     }
     if (value === 'C') {
       this.message = 'Cancelado';

@@ -14,7 +14,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              ¿Eliminar de manera definital al cliente {{client.client_name}} {{client.client_lastname}}
+              ¿Eliminar de manera definital al cliente {{client.client_name}} {{client.client_lastname}}?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" (click)="deleteClient(client.client_id)">Eliminiar</button>
@@ -78,7 +78,40 @@
             <h3 class="card-title m-0">{{products.product_type | slice: 7}} <span> <strong>
                   #{{products.product_number}}</strong></span>
             </h3>
-            <h3 class="card-subtitle m-0">{{products.product_state | statePipe}}</h3>
+            <div class="custom" style="width: 17%;">
+              <h3 class="card-subtitle m-0">{{products.product_state | statePipe}}</h3>
+              <button class="btn p-0" data-bs-toggle="modal" data-bs-target="#updateState">
+                <fa-icon [icon]="icon" [styles]="{'stroke': '#fff', 'color': '#fff'}"></fa-icon>
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="updateState" tabindex="-1" aria-labelledby="updateStateLabel">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-dark" id="updateStateLabel">Actualizar estado del producto
+                        <strong>#{{products.product_number}}</strong>
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-dark">
+                      <form [formGroup]="updateForm">
+                        <div class="mb-3">
+                          <label for="state" class="form-label">Estado de cuenta</label>
+                          <select formControlName="product_state" class="form-control" id="state">
+                            <option [ngValue]="1" disabled>Seleccionar estado de cuenta</option>
+                            <option *ngFor="let state of states" [ngValue]="state.key">{{state.state}}</option>
+                          </select>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-success" (click)="onUpdateSubmit(products.product_id)"> Actualizar </button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
