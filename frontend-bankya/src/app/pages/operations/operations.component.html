@@ -1,0 +1,85 @@
+<nav class="navbar">
+  <div class="container-fluid">
+    <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
+      <button class="btn btn-success" (click)="back()">Volver a lista de Productos</button>
+    </ul>
+    <div class="d-flex padding: 0;">
+      <h2 style="margin: 0; margin-right: 10px;">Movimientos</h2>
+      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Realizar
+        movimiento</button>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Realizar Movimiento</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Aceptar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-4" *ngIf="products">
+      <h2>Tipo de cuenta:<strong> {{products.product_type}} </strong></h2>
+      <h2>Número de cuenta:<strong> #{{products.product_number}} </strong></h2>
+      <h2>Estado:<strong class="badge"
+          [ngClass]="{'bg-warning': products.product_state === 'I', 'bg-success':products.product_state === 'A'}">
+          {{products.product_state | statePipe }} </strong></h2>
+      <h2><strong style="font-size: 2rem;"> {{products.product_ammount | currency }} </strong></h2>
+      <div style="display: flex; flex-direction: column;">
+        <button class="btn mb-2"
+          [ngClass]="{'btn-success': products.product_state === 'I', 'btn-warning':products.product_state === 'A'}"
+          (click)="updateState(products.product_id, products)">Cambiar
+          estado a {{products.product_state | vale}}</button>
+        <button class="btn btn-danger">Cancelar cuenta </button>
+      </div>
+
+    </div>
+    <div class="row col" *ngIf="operations.length == 0;else displayOperations">
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No hay movimientos</h4>
+        <h2>Intenta consignar, retirar o transferir tu dinero.</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #displayOperations>
+  <div class="col">
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Tipo de movimiento</th>
+          <th scope="col">$ Valor</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Número de cuenta</th>
+          <th scope="col">Fecha de movimiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let operation of operations">
+          <td>{{operation.operation_id}}</td>
+          <td>{{operation.operation_type}}</td>
+          <td>{{operation.operation_value}}</td>
+          <td>{{operation.operation_description}}</td>
+          <td>{{operation.account_number}}</td>
+          <td>{{operation.operation_date}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

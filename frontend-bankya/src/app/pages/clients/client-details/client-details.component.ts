@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -20,19 +20,16 @@ export class ClientDetailsComponent implements OnInit {
   public formattedDate = this.datePipe.transform(new Date(), this.stringFormat);
   public products: Array<ProductModel> = [];
   public client: ClientModel | undefined;
-  public error: boolean = false;
   public submitted: boolean = false;
   public _form!: FormGroup;
-  public updateForm!: FormGroup;
   public types = [{ type: 'Cuenta Corriente' }, { type: 'Cuenta Ahorros' }];
-  public states = [{ state: 'Inactivo', key: 'I' }, { state: 'Activo', key: 'A' }];
   public icon = faEdit;
-  public idproduct!: number;
 
   constructor(
     public clientService: ClientServiceService,
     private productService: ProductService,
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
     private readonly location: Location
   ) {}
@@ -50,15 +47,10 @@ export class ClientDetailsComponent implements OnInit {
       },
     });
 
-    this.updateForm = this.formBuilder.group({
-      product_state: ['', Validators.required]
-    });
-
     this.productService
       .getClientProductsById(Number(this.route.snapshot.paramMap.get('id')))
       .subscribe((resp: any) => {
         this.products = resp;
-        console.log('cliente: ', resp);
       });
   }
 
@@ -79,35 +71,15 @@ export class ClientDetailsComponent implements OnInit {
     )}/products`;
   }
 
-  onUpdateSubmit(id: number) {
-    this.submitted;
-
-    if (this.updateForm.invalid) {
-      return;
-    }
-
-    console.log(id);
-
-    this.productService.updateProductState(id)
-
-  }
-
   getClientById(id: any): void {
-    this.clientService.getClientById(id).subscribe(
-      (client) => {
-        this.client = client;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.clientService.getClientById(id).subscribe((client) => {
+      this.client = client;
+    });
   }
 
   deleteClient(clientId: number) {
-    console.log('Id recibido: ', clientId);
     this.productService.getClientProductsById(clientId).subscribe((resp) => {
       if (resp.product_state == 'A' || resp.product_state == 'I') {
-        console.log('Estado: ', resp.product_state);
         return (location.href = `/client/${Number(
           this.route.snapshot.paramMap.get('id')
         )}`);
@@ -125,5 +97,9 @@ export class ClientDetailsComponent implements OnInit {
 
   back() {
     this.location.back();
+  }
+
+  goTo(id: number) {
+    this.router.navigate([`/product/${id}/operations`]);
   }
 }

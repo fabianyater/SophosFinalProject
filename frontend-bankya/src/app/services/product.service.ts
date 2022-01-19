@@ -20,7 +20,7 @@ export class ProductService {
   }
 
   public getProductsById(id: number) {
-    return this.http.get<ProductModel>(`${this.url}/products${id}`);
+    return this.http.get<ProductModel>(`${this.url}/products/${id}`);
   }
 
   public deleteProduct(id: number) {
@@ -31,7 +31,16 @@ export class ProductService {
     return this.http.get<ProductModel>(`${this.url}/products/client/${id}`);
   }
 
-  public updateProductState(product: number) {
-    return this.http.put<number>(`${this.url}/products/edit`, product);
+  public updateProductState(id: number, product: ProductModel) {
+    return this.http.put<ProductModel>(
+      `${this.url}/products/update-state/${id}`,
+      product
+    );
+  }
+  public cancelProduct(product: ProductModel, id: number) {
+    return this.http.put<ProductModel>(
+      `${this.url}/products/cancel/${id}`,
+      product
+    );
   }
 }

@@ -26,4 +26,6 @@ public interface OperationService {
 	public String findProductType(Integer id);
 	
 	public String findProductState(Integer id);
+	
+	public Iterable<OperationModel> findProductOperations(Integer id);
 }

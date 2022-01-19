@@ -67,5 +67,10 @@ public class OperationServiceImplementation implements OperationService {
 		return operationDao.findProductState(id);
 	}
 
+	@Override
+	public Iterable<OperationModel> findProductOperations(Integer id) {
+		return operationDao.findProductOperations(id);
+	}
+
 
 }

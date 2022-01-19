@@ -27,7 +27,8 @@ import com.bankya.services.ProductService;
 
 import exceptions.HandleException;
 
-@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST })
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST,
+		RequestMethod.DELETE })
 @RestController
 @RequestMapping("api/v1/operations")
 public class OperationRest {
@@ -101,16 +102,29 @@ public class OperationRest {
 		return lOperation;
 	}
 
+	@GetMapping("/product/{id}")
+	public Iterable<OperationModel> getProductOperations(@PathVariable("id") Integer id) {
+		
+
+		Iterable<OperationModel> oOperation = operationService.findProductOperations(id);
+
+		System.out.println(oOperation);
+
+		return oOperation;
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<OperationModel> getOperationById(@PathVariable("id") Integer id) {
+		Optional<OperationModel> oOperation = operationService.findById(id);
+		if (!oOperation.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok().body(oOperation.get());
+
+	}
+
 	/*
-	 * @GetMapping("/{id}") public ResponseEntity<OperationModel>
-	 * getOperationById(@PathVariable("id") Integer id) { Optional<OperationModel>
-	 * oOperation = operationService.findById(id); if (!oOperation.isPresent()) {
-	 * return ResponseEntity.notFound().build(); }
-	 * 
-	 * return ResponseEntity.ok().body(oOperation.get());
-	 * 
-	 * }
-	 * 
 	 * @PutMapping("/{id}") public ResponseEntity<OperationModel>
 	 * editOperation(@RequestBody OperationModel operation,
 	 * 

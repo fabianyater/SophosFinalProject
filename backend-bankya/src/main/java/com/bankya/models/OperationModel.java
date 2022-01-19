@@ -34,7 +34,7 @@ public class OperationModel {
 	private Integer account_number;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JsonIgnoreProperties(value = { "product_type", "product_number", "product_state", "product_ammount" })
+	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number", "product_state", "product_ammount" })
 	private ProductModel product_id;
 
 	// Getters and setter

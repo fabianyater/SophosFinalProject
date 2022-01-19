@@ -36,4 +36,7 @@ public interface OperationDao extends JpaRepository<OperationModel, Integer> {
 	
 	@Query("SELECT p.product_state from product p WHERE p.product_id = :id")
 	String findProductState(@Param("id") Integer id);
+	
+	@Query("SELECT op FROM product p INNER JOIN operation op ON p.product_id = :id")
+	Iterable<OperationModel> findProductOperations(@Param("id") Integer id);
 }

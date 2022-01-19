@@ -25,7 +25,8 @@ import com.bankya.services.ProductService;
 
 import exceptions.HandleException;
 
-@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+		RequestMethod.DELETE })
 @RestController
 @RequestMapping("api/v1/products")
 public class ProductRest {
@@ -35,9 +36,9 @@ public class ProductRest {
 
 	@PostMapping
 	public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel product) throws HandleException {
-		int random = (int)(Math.random()*10000000+1000000);
+		int random = (int) (Math.random() * 10000000 + 1000000);
 		product.setProduct_number(random);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
 	}
 
@@ -60,7 +61,8 @@ public class ProductRest {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ProductModel> editProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id) throws HandleException {
+	public ResponseEntity<ProductModel> editProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id)
+			throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
 		if (!oProduct.isPresent()) {
 			throw new HandleException("Producto no encontrado. No se puede modificar");
@@ -95,30 +97,45 @@ public class ProductRest {
 	}
 
 	@PutMapping("/{id}/cancel")
-	public ResponseEntity<ProductModel> cancelProduct(@RequestBody ProductModel product,
-			@PathVariable("id") Integer id) throws HandleException {
+	public ResponseEntity<ProductModel> cancelProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id)
+			throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
 		if (!oProduct.isPresent()) {
 			throw new HandleException("Producto no encontrado. No se puede cancelar");
 		}
-		
+
 		System.out.println(oProduct.get().getProduct_ammount());
 
 		if (oProduct.get().getProduct_ammount() > 0) {
-			throw new HandleException("No puede cancelar un producto con saldo mayor a cero (0). Debe retirar el dinero primero");
+			throw new HandleException(
+					"No puede cancelar un producto con saldo mayor a cero (0). Debe retirar el dinero primero");
 		}
 
 		oProduct.get().setProduct_state(product.getProduct_state());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
 	}
-	
-	@PutMapping("/edit/{id}")
-	public ResponseEntity<ProductModel> updateProductState(@RequestBody ProductModel product, @PathVariable("id") Integer id){
+
+	@PutMapping("/update-state/{id}")
+	public ResponseEntity<ProductModel> updateProductState(@RequestBody ProductModel product,
+			@PathVariable("id") Integer id) {
+
+		String state = "";
+
 		Optional<ProductModel> oProduct = productService.findById(id);
-		
-		oProduct.get().setProduct_state(product.getProduct_state());
-		
+
+		String currentState = product.getProduct_state();
+
+		if (currentState.equals("A")) {
+			state = "I";
+		} else {
+			state = "A";
+		}
+
+		oProduct.get().setProduct_state(state);
+
+		System.out.println("Estado: " + oProduct.get().getProduct_state().toString());
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
 	}
 }

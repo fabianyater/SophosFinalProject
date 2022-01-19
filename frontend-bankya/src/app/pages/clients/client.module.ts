@@ -8,6 +8,8 @@ import { ClientDetailsComponent } from './client-details/client-details.componen
 import { AddClientComponent } from './add-client/add-client.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatePipePipe } from 'src/app/pipes/state-pipe.pipe';
+import { OperationsComponent } from '../operations/operations.component';
+import { ValePipe } from 'src/app/pipes/vale.pipe';
 
 const routes: Routes = [
   {
@@ -19,10 +21,23 @@ const routes: Routes = [
     ],
   },
   { path: 'client/:id/products', component: ClientDetailsComponent },
+  { path: 'product/:id/operations', component: OperationsComponent },
 ];
 
 @NgModule({
-  declarations: [ClientsComponent, ClientDetailsComponent, AddClientComponent, StatePipePipe],
-  imports: [CommonModule, FontAwesomeModule, RouterModule.forChild(routes), ReactiveFormsModule],
+  declarations: [
+    ClientsComponent,
+    ClientDetailsComponent,
+    AddClientComponent,
+    OperationsComponent,
+    StatePipePipe,
+    ValePipe
+  ],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
+  ],
 })
 export class ClientModule {}
