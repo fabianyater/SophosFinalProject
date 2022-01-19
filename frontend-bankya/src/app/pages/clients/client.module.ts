@@ -17,7 +17,7 @@ const routes: Routes = [
     component: ClientsComponent,
     children: [
       { path: '', redirectTo: 'clients', pathMatch: 'full' },
-      { path: 'clients/add', component: AddClientComponent },
+      //{ path: 'clients/add', component: AddClientComponent },
     ],
   },
   { path: 'client/:id/products', component: ClientDetailsComponent },
@@ -31,7 +31,7 @@ const routes: Routes = [
     AddClientComponent,
     OperationsComponent,
     StatePipePipe,
-    ValePipe
+    ValePipe,
   ],
   imports: [
     CommonModule,

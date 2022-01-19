@@ -1,16 +1,28 @@
 <div class="row">
-  <div class="col-2">
-    <router-outlet></router-outlet>
-  </div>
   <button *ngIf="!true" class="visible"></button>
-  <div class="col-10">
-    <div class="navbar">
+  <div class="col">
+    <div class="navbar mb-3 mt-3">
       <h1>Clientes</h1>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Número documento" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
-      <a class="btn btn-outline-success" [routerLink]="'/clients/add'">Crear nuevo registro</a>
+      <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Crear nuevo registro
+      </button>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Registrar cliente nuevo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <app-add-client></app-add-client>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div *ngIf="clients.length == 0;else tableClients">
       <div class="alert alert-info" role="alert">

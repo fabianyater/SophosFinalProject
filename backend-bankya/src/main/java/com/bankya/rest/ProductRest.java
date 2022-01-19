@@ -96,7 +96,7 @@ public class ProductRest {
 		return oProduct;
 	}
 
-	@PutMapping("/{id}/cancel")
+	@PutMapping("/cancel/{id}")
 	public ResponseEntity<ProductModel> cancelProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id)
 			throws HandleException {
 		Optional<ProductModel> oProduct = productService.findById(id);
