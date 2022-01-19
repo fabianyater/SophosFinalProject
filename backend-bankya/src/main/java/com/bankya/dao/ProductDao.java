@@ -9,12 +9,12 @@ import org.springframework.data.repository.query.Param;
 import com.bankya.models.ProductModel;
 
 public interface ProductDao extends JpaRepository<ProductModel, Integer> {
-	@Query("UPDATE product p SET p.product_state = 'C' WHERE p.product_id = :id")
-	Optional<ProductModel> cancelProduct(@Param("id") Integer id);
+	@Query("UPDATE product p SET p.product_state = :value WHERE p.product_id = :id")
+	Optional<ProductModel> cancelProduct(@Param("id") Integer id, @Param("value") String value);
 	
 	@Query("UPDATE product p SET p.product_state = :value WHERE p.product_id = :id")
 	Optional<ProductModel> updateProductState(@Param("id") Integer id, @Param("value") String value);
 
-	@Query("SELECT p FROM client c INNER JOIN product p ON c.client_id = p.client_id WHERE c.client_id = :id")
+	@Query("SELECT p FROM client c INNER JOIN product p ON c.client_id = p.client_id WHERE c.client_id = :id and p.product_state <> 'C'")
 	Iterable<ProductModel> findClientProducts(@Param("id") Integer id);
 }

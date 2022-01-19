@@ -2,57 +2,57 @@
   <div class="col-md-12">
     <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
       <div class="mb-3">
-        <label for="name" class="form-label">Nombre</label>
+        <label for="name" class="form-label">Name</label>
         <input type="text" formControlName="client_name" class="form-control"
           [ngClass]="{'is-invalid': form['client_name'].errors}" id="name">
         <div *ngIf="form['client_name'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_name'].errors['required']">El nombre el obligatorio</div>
+          <div *ngIf="form['client_name'].errors['required']">Name is required</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="lastname" class="form-label">Apellido</label>
+        <label for="lastname" class="form-label">lastname</label>
         <input type="text" formControlName="client_lastname" class="form-control"
           [ngClass]="{'is-invalid': form['client_lastname'].errors}" id="lastname">
         <div *ngIf="form['client_lastname'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_lastname'].errors['required']">El apellido el obligatorio</div>
+          <div *ngIf="form['client_lastname'].errors['required']">Lastname is required</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="email" class="form-label">Correo electrónico</label>
+        <label for="email" class="form-label">Email</label>
         <input type="email" formControlName="client_email" class="form-control"
           [ngClass]="{'is-invalid': form['client_email'].errors}" id="email">
         <div *ngIf="form['client_email'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_email'].errors['required']">El email es obligatorio</div>
-          <div *ngIf="form['client_email'].errors['client_email']">El email debe ser válido</div>
+          <div *ngIf="form['client_email'].errors['required']">Email is required</div>
+          <div *ngIf="form['client_email'].errors['client_email']">Email must be a valida email</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="document" class="form-label">Tipo documento</label>
+        <label for="document" class="form-label">Document type</label>
         <select formControlName="client_document_type" class="form-control"
           [ngClass]="{'is-invalid': form['client_document_type'].errors}" id="document">
           <option *ngFor="let doc of documents" [ngValue]="doc.type">{{doc.type}}</option>
         </select>
         <div *ngIf="form['client_document_type'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_document_type'].errors['required']">El tipo de documento es obligatorio</div>
+          <div *ngIf="form['client_document_type'].errors['required']">Document type is required</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="document_number" class="form-label">Número documento</label>
+        <label for="document_number" class="form-label">Document number</label>
         <input type="text" formControlName="client_document_number" class="form-control"
           [ngClass]="{'is-invalid': form['client_document_number'].errors}" id="document_number">
         <div *ngIf="form['client_document_number'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_document_number'].errors['required']">El número de documento es obligatorio</div>
+          <div *ngIf="form['client_document_number'].errors['required']">Document number is required</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="birthday" class="form-label">Fecha nacimiento</label>
+        <label for="birthday" class="form-label">Birthday</label>
         <input type="date" formControlName="client_birthday" class="form-control"
           [ngClass]="{'is-invalid': form['client_birthday'].errors}" id="birthday">
         <div *ngIf="form['client_birthday'].errors" class="invalid-feedback">
-          <div *ngIf="form['client_birthday'].errors['required']">La fecha de nacimiento es obligatoria</div>
+          <div *ngIf="form['client_birthday'].errors['required']">Birthday is required</div>
         </div>
       </div>
-      <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Registrar cliente</button>
+      <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Add Customer</button>
     </form>
   </div>
 </div>

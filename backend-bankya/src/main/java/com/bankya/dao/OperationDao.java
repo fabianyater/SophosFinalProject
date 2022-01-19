@@ -1,5 +1,6 @@
 package com.bankya.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +28,7 @@ public interface OperationDao extends JpaRepository<OperationModel, Integer> {
 	@Modifying
 	@Query("UPDATE product p SET p.product_ammount = :value WHERE p.product_id = :id")
 	void addAmmount(@Param("id") Integer id, @Param("value") Double value);
-
+	
 	@Query("SELECT p.product_id FROM product p WHERE p.product_number = :account_number")
 	Integer findIdByAccountNumber(@Param("account_number") Integer account_number);
 	
@@ -37,6 +38,6 @@ public interface OperationDao extends JpaRepository<OperationModel, Integer> {
 	@Query("SELECT p.product_state from product p WHERE p.product_id = :id")
 	String findProductState(@Param("id") Integer id);
 	
-	@Query("SELECT op FROM product p INNER JOIN operation op ON p.product_id = :id")
-	Iterable<OperationModel> findProductOperations(@Param("id") Integer id);
+	@Query("SELECT op FROM product p INNER JOIN operation op ON p.product_id = op.product_id where p.product_id = :id and p.product_type = :type")
+	List<OperationModel> findProductOperations(@Param("id") Integer id, @Param("type") String type);
 }

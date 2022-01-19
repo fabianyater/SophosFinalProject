@@ -1,26 +1,58 @@
 <nav class="navbar">
   <div class="container-fluid">
     <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
-      <button class="btn btn-success" (click)="back()">Volver a lista de Productos</button>
+      <button class="btn btn-success" (click)="back()">Back to products list</button>
     </ul>
     <div class="d-flex padding: 0;">
-      <h2 style="margin: 0; margin-right: 10px;">Movimientos</h2>
-      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Realizar
-        movimiento</button>
+      <h2 style="margin: 0; margin-right: 10px;">Operations</h2>
+      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a new
+        operation</button>
 
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Realizar Movimiento</h5>
+              <h2 class="modal-title" id="exampleModalLabel">Add a new operation</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Aceptar</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+                <div class="mb-3">
+                  <label for="type" class="form-label">Operation type</label>
+                  <select formControlName="operation_type" class="form-control"
+                    [ngClass]="{'is-invalid': form['operation_type'].errors}" id="type">
+                    <option value="" disabled selected>Select option</option>
+                    <option *ngFor="let type of operationType" [ngValue]="type.type">{{type.type}}</option>
+                  </select>
+                  <div *ngIf="form['operation_type'].errors" class="invalid-feedback">
+                    <div *ngIf="form['operation_type'].errors['required']">Operation type is required</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="_value" class="form-label">Value</label>
+                  <input type="number" min="0" class="form-control" formControlName="operation_value"
+                    [ngClass]="{'is-invalid': form['operation_value'].errors}" id="_value">
+                  <div *ngIf="form['operation_value'].errors" class="invalid-feedback">
+                    <div *ngIf="form['operation_value'].errors['required']">Value is required</div>
+                  </div>
+                  <div *ngIf="errorMessage==true" class="is-invalid" style="color: red;">
+                    Saldo insuficiente
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <input type="text" class="form-control" formControlName="operation_description" placeholder="Opcional"
+                    id="description">
+                </div>
+                <div class="mb-3">
+                  <label for="account_number" class="form-label">Account number (transfers)</label>
+                  <input type="number" formControlName="account_number" class="form-control" id="account_number">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Agree</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -33,25 +65,30 @@
 
   <div class="row">
     <div class="col-4" *ngIf="products">
-      <h2>Tipo de cuenta:<strong> {{products.product_type}} </strong></h2>
-      <h2>Número de cuenta:<strong> #{{products.product_number}} </strong></h2>
+      <h2>Account type:<strong> {{products.product_type}} </strong></h2>
+      <h2>Account number:<strong> #{{products.product_number}} </strong></h2>
       <h2>Estado:<strong class="badge"
-          [ngClass]="{'bg-warning': products.product_state === 'I', 'bg-success':products.product_state === 'A'}">
+          [ngClass]="{'bg-warning': products.product_state === 'I', 'bg-success':products.product_state === 'A', 'bg-secondary':products.product_state === 'C'}">
           {{products.product_state | statePipe }} </strong></h2>
       <h2><strong style="font-size: 2rem;"> {{products.product_ammount | currency }} </strong></h2>
       <div style="display: flex; flex-direction: column;">
         <button class="btn mb-2"
           [ngClass]="{'btn-success': products.product_state === 'I', 'btn-warning':products.product_state === 'A'}"
-          (click)="updateState(products.product_id, products)">Cambiar
-          estado a {{products.product_state | vale}}</button>
-        <button class="btn btn-danger">Cancelar cuenta </button>
+          (click)="updateState(products.product_id, products)">Change state to {{products.product_state |
+          vale}}</button>
+        <button class="btn btn-danger" (click)="cancelProduct(products.product_id, products)">Cancel account </button>
+        <div class="is-invalid mt-4" style="color: red;" *ngIf="errorMessage2==true">
+          It is not possible to cancel a product with an available balance and a Active or Inactive state.
+        </div>
       </div>
 
     </div>
-    <div class="row col" *ngIf="operations.length == 0;else displayOperations">
-      <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">No hay movimientos</h4>
-        <h2>Intenta consignar, retirar o transferir tu dinero.</h2>
+    <div class="row col">
+      <div *ngIf="operations.length == 0;else displayOperations">
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">No records</h4>
+          <h2>Try to deposit, withdraw or transfer your money.</h2>
+        </div>
       </div>
     </div>
   </div>
@@ -63,18 +100,23 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Tipo de movimiento</th>
-          <th scope="col">$ Valor</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Número de cuenta</th>
-          <th scope="col">Fecha de movimiento</th>
+          <th scope="col">Operation type</th>
+          <th scope="col">$ Value</th>
+          <th scope="col">$ Balance</th>
+          <th scope="col">Description</th>
+          <th scope="col">Account number</th>
+          <th scope="col">Operation created at</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let operation of operations">
           <td>{{operation.operation_id}}</td>
           <td>{{operation.operation_type}}</td>
-          <td>{{operation.operation_value}}</td>
+          <td
+            [ngClass]="{'reducer': operation.operation_type == 'Withdraw' || operation.operation_type == 'Transfer', 'deposit': operation.operation_type == 'Deposit'}">
+            {{operation.operation_type | greater}}
+            {{operation.operation_value}}</td>
+          <td>{{operation.operation_balance}}</td>
           <td>{{operation.operation_description}}</td>
           <td>{{operation.account_number}}</td>
           <td>{{operation.operation_date}}</td>

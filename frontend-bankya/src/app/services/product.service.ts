@@ -37,7 +37,7 @@ export class ProductService {
       product
     );
   }
-  public cancelProduct(product: ProductModel, id: number) {
+  public cancelProduct(id: number, product: ProductModel,) {
     return this.http.put<ProductModel>(
       `${this.url}/products/cancel/${id}`,
       product

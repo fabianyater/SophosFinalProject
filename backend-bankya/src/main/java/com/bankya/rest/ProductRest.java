@@ -99,7 +99,10 @@ public class ProductRest {
 	@PutMapping("/cancel/{id}")
 	public ResponseEntity<ProductModel> cancelProduct(@RequestBody ProductModel product, @PathVariable("id") Integer id)
 			throws HandleException {
+		
+		String state = "";
 		Optional<ProductModel> oProduct = productService.findById(id);
+		String currentState = product.getProduct_state();
 		if (!oProduct.isPresent()) {
 			throw new HandleException("Producto no encontrado. No se puede cancelar");
 		}
@@ -110,8 +113,12 @@ public class ProductRest {
 			throw new HandleException(
 					"No puede cancelar un producto con saldo mayor a cero (0). Debe retirar el dinero primero");
 		}
+		
+		if (currentState.equals("A") || currentState.equals("I")) {
+			state = "C";
+		}
 
-		oProduct.get().setProduct_state(product.getProduct_state());
+		oProduct.get().setProduct_state(state);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(oProduct.get()));
 	}

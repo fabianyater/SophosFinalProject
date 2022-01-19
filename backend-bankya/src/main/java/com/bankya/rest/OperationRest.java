@@ -45,36 +45,43 @@ public class OperationRest {
 		String type = operationService.findProductType(id);
 		String state = operationService.findProductState(id);
 
-		if (type.equalsIgnoreCase("cuenta corriente")) {
+		System.out.println("Balance: " + balance);
+		System.out.println("Valor: " + value);
+		System.out.println("Tipo: " + type);
+
+		if (type.equalsIgnoreCase("checking account")) {
 			limite = -2000000;
 		}
 
-		if (operation.getOperation_type().equalsIgnoreCase("retiro")) {
-			double substract = Math.abs(balance) - value;
+		if (operation.getOperation_type().equalsIgnoreCase("withdraw")) {
+			double substract = balance - value;
 			if (substract < limite) {
-				throw new HandleException("No puede retirar. Saldo insuficiente");
+				// throw new HandleException("No puede retirar. Saldo insuficiente");
+				return ResponseEntity.badRequest().build();
 			}
 			if (state.equalsIgnoreCase("I") || state.equalsIgnoreCase("C")) {
 				throw new HandleException("Debe tener una cuenta activa para retirar.");
 			}
+			operation.setOperation_balance(balance - value);
 			operationService.substractAmmount(id, substract);
 		}
 
-		if (operation.getOperation_type().equalsIgnoreCase("consignacion")) {
+		if (operation.getOperation_type().equalsIgnoreCase("deposit")) {
 
 			if (state.equalsIgnoreCase("C")) {
 				throw new HandleException("Debe tener una cuenta activa para retirar.");
 			}
 
+			operation.setOperation_balance(balance + value);
 			double add = balance + value;
 			operationService.addAmmount(id, add);
 		}
 
-		if (operation.getOperation_type().equalsIgnoreCase("transaccion")) {
+		if (operation.getOperation_type().equalsIgnoreCase("transfer")) {
 
 			try {
-				int ammount = operation.getAccount_number();
-				int receptor = operationService.findIdByAccountNumber(ammount);
+				int account_number = operation.getAccount_number();
+				int receptor = operationService.findIdByAccountNumber(account_number);
 				double balanceRepector = operationService.findBalance(receptor);
 
 				double add = balanceRepector + value;
@@ -84,8 +91,14 @@ public class OperationRest {
 					throw new HandleException("No puede realizar la transacción, excedió el limite de sobregiro");
 				}
 
+				if (state.equalsIgnoreCase("I") || state.equalsIgnoreCase("C")) {
+					throw new HandleException("Debe tener una cuenta activa para retirar.");
+				}
+
+				operation.setOperation_balance(balance - value);
 				operationService.addAmmount(receptor, add);
 				operationService.substractAmmount(id, substract);
+				
 			} catch (Exception he) {
 				throw new HandleException("Error");
 			}
@@ -103,12 +116,13 @@ public class OperationRest {
 	}
 
 	@GetMapping("/product/{id}")
-	public Iterable<OperationModel> getProductOperations(@PathVariable("id") Integer id) {
-		
+	public Iterable<OperationModel> getProductOperations(@PathVariable("id") Integer id, ProductModel product) {
 
-		Iterable<OperationModel> oOperation = operationService.findProductOperations(id);
+		String productType = operationService.findProductType(id);
 
-		System.out.println(oOperation);
+		System.out.println("****************" + productType);
+
+		Iterable<OperationModel> oOperation = operationService.findProductOperations(id, productType);
 
 		return oOperation;
 	}

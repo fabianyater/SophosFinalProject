@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StatePipePipe } from 'src/app/pipes/state-pipe.pipe';
 import { OperationsComponent } from '../operations/operations.component';
 import { ValePipe } from 'src/app/pipes/vale.pipe';
+import { GreaterPipe } from 'src/app/pipes/greater.pipe';
 
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
     OperationsComponent,
     StatePipePipe,
     ValePipe,
+    GreaterPipe
   ],
   imports: [
     CommonModule,

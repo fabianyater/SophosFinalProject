@@ -32,15 +32,28 @@ public class OperationModel {
 	
 	@Column(length = 50)
 	private Integer account_number;
-
+	
+	@Column(length = 50)
+	private Double operation_balance;
+	
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number", "product_state", "product_ammount" })
+	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number", "product_state"})
 	private ProductModel product_id;
 
 	// Getters and setter
 	
+	
+	
 	public Integer getOperation_id() {
 		return operation_id;
+	}
+
+	public Double getOperation_balance() {
+		return operation_balance;
+	}
+
+	public void setOperation_balance(Double operation_balance) {
+		this.operation_balance = operation_balance;
 	}
 
 	public Integer getAccount_number() {

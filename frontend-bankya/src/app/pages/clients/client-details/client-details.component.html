@@ -1,10 +1,10 @@
 <nav class="navbar">
   <div class="container-fluid" *ngIf="client">
     <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
-      <button class="btn btn-success" (click)="back()">Volver a lista de clientes</button>
+      <button class="btn btn-success" (click)="back()">Back to customers list</button>
       <h1 style="margin: 0 10px 0 10px;">{{client.client_name | uppercase}} {{client.client_lastname | uppercase}}</h1>
       <button class="btn btn-outline-danger enabled" [ngClass]="{'disabled': products.length > 0}"
-        data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</button>
+        data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog">
@@ -14,18 +14,18 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              ¿Eliminar de manera definital al cliente {{client.client_name}} {{client.client_lastname}}?
+              Are you sure you want to delete the user {{client.client_name}} {{client.client_lastname}}?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" (click)="deleteClient(client.client_id)">Eliminiar</button>
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-danger" (click)="deleteClient(client.client_id)">Delete</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
             </div>
           </div>
         </div>
       </div>
     </ul>
     <div class="d-flex padding: 0;">
-      <h2 style="margin: 0;">PRODUCTOS</h2>
+      <h2 style="margin: 0;">PRODUCTS</h2>
     </div>
   </div>
 </nav>
@@ -36,17 +36,17 @@
       <div class="col-md-12">
         <form [formGroup]="_form">
           <div class="mb-3">
-            <label for="_type" class="form-label">Tipo de cuenta</label>
+            <label for="_type" class="form-label">Account type</label>
             <select formControlName="product_type" class="form-control"
               [ngClass]="{'is-invalid': form['product_type'].errors}" id="_type">
               <option [ngValue]="1" disabled>Seleccionar tipo de cuenta</option>
               <option *ngFor="let type of types" [ngValue]="type.type">{{type.type}}</option>
             </select>
             <div *ngIf="form['product_type'].errors" class="invalid-feedback">
-              <div *ngIf="form['product_type'].errors['required']">El tipo de cuenta es obligatorio</div>
+              <div *ngIf="form['product_type'].errors['required']">The account type is required</div>
             </div>
           </div>
-          <button class="btn btn-success" (click)="onSubmit()" [disabled]="_form.invalid"> Enviar </button>
+          <button class="btn btn-success" (click)="onSubmit()" [disabled]="_form.invalid"> Send </button>
           <!-- <button type="submit" class="btn btn-success" [disabled]="_form.invalid">Registrar producto</button> -->
         </form>
       </div>
@@ -55,8 +55,8 @@
   <div class="row col-9">
     <div *ngIf="products.length == 0;else productCards">
       <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">No hay productos</h4>
-        <p>Intenta registrar un nuevo producto.</p>
+        <h4 class="alert-heading">No records</h4>
+        <p>Try adding a new register.</p>
       </div>
     </div>
   </div>
@@ -65,17 +65,17 @@
 <ng-template #productCards>
   <div class="col-sm-6" *ngFor="let products of products;">
     <div class="card w-100" [ngClass]="{
-        'l-bg-blue-dark': products.product_type === 'Cuenta Corriente', 
-        'l-bg-green-dark': products.product_type === 'Cuenta Ahorros'
+        'l-bg-blue-dark': products.product_type === 'Checking Account', 
+        'l-bg-green-dark': products.product_type === 'Savings Account'
       }" style="width: 18rem;">
       <div class="card-body">
         <div>
           <div class="custom">
-            <h2 class="card-title m-0">Cuenta</h2>
-            <h2 class="card-subtitle m-0">Estado</h2>
+            <h2 class="card-title m-0">Account</h2>
+            <h2 class="card-subtitle m-0">State</h2>
           </div>
           <div class="custom mb-4">
-            <h3 class="card-title m-0">{{products.product_type | slice: 7}} <span> <strong>
+            <h3 class="card-title m-0">{{products.product_type | slice: 0:8}} <span> <strong>
                   #{{products.product_number}}</strong></span>
             </h3>
             <div class="custom">
@@ -84,13 +84,13 @@
           </div>
         </div>
         <div>
-          <h4 class="card-subtitle m-0 text-end">Saldo disponible</h4>
-          <h2 href="#" class="card-title m-0 text-end">{{products.product_ammount | currency}}</h2>
+          <h4 class="card-subtitle m-0 text-end">Balance available</h4>
+          <h2 href="#" class="card-title m-0 text-end fs-2">{{products.product_ammount | currency}}</h2>
         </div>
         <hr>
         <div class="text-center">
           <a [ngClass]="{'text-muted': products.product_type === 'Cancelado'}" routerLink="['']" class="text-light fs-5"
-            (click)="goTo(products.product_id)">Ver movimientos</a>
+            (click)="goTo(products.product_id)">See operations</a>
         </div>
       </div>
     </div>

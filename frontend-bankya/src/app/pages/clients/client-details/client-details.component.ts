@@ -22,7 +22,7 @@ export class ClientDetailsComponent implements OnInit {
   public client: ClientModel | undefined;
   public submitted: boolean = false;
   public _form!: FormGroup;
-  public types = [{ type: 'Cuenta Corriente' }, { type: 'Cuenta Ahorros' }];
+  public types = [{ type: 'Checking Account' }, { type: 'Savings Account' }];
   public icon = faEdit;
 
   constructor(

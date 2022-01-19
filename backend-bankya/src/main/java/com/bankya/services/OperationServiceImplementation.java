@@ -1,5 +1,6 @@
 package com.bankya.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,8 @@ public class OperationServiceImplementation implements OperationService {
 	}
 
 	@Override
-	public Iterable<OperationModel> findProductOperations(Integer id) {
-		return operationDao.findProductOperations(id);
+	public List<OperationModel> findProductOperations(Integer id, String type) {
+		return operationDao.findProductOperations(id, type);
 	}
 
 

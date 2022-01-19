@@ -2,19 +2,19 @@
   <button *ngIf="!true" class="visible"></button>
   <div class="col">
     <div class="navbar mb-3 mt-3">
-      <h1>Clientes</h1>
-      <form class="d-flex">
+      <h1>Customers</h1>
+     <!--  <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Número documento" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Buscar</button>
-      </form>
+      </form> -->
       <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Crear nuevo registro
+        Add a new Customer
       </button>
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Registrar cliente nuevo</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Add a new Customer</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -26,8 +26,8 @@
     </div>
     <div *ngIf="clients.length == 0;else tableClients">
       <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">Sin registros</h4>
-        <p>No hay clientes registrados en el sistema. Intenta registrar en el formulario de registros.</p>
+        <h4 class="alert-heading">No records</h4>
+        <p>There are no customers registered in the system. Try to register in the registration form.</p>
       </div>
     </div>
   </div>
@@ -38,12 +38,12 @@
     <thead>
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Tipo de documento</th>
-        <th scope="col">Número de documento</th>
-        <th scope="col">Fecha de naciemiento</th>
-        <th scope="col">Fecha de creación</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Document type</th>
+        <th scope="col">Document number</th>
+        <th scope="col">Birthday</th>
+        <th scope="col">Created at</th>
       </tr>
     </thead>
     <tbody>
@@ -56,7 +56,7 @@
         <td>{{client.client_birthday}}</td>
         <td>{{client.client_created_at}}</td>
         <td>
-          <button class="btn btn-outline-primary" (click)="goTo(client.client_id)">Detalle</button>
+          <button class="btn btn-outline-primary" (click)="goTo(client.client_id)">See more</button>
         </td>
       </tr>
     </tbody>

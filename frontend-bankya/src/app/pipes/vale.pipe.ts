@@ -8,10 +8,10 @@ export class ValePipe implements PipeTransform {
 
   transform(value: unknown, ...args: unknown[]) {
     if (value === 'A') {
-      this.message = 'Inactivo';
+      this.message = 'Inactive';
     }
     if (value === 'I') {
-      this.message = 'Activo';
+      this.message = 'Active';
     }
     return this.message;
   }
