@@ -47,4 +47,5 @@ public class ProductServiceImplementation implements ProductService {
 		return productDao.updateProductState(id, value);
 	}
 
+
 }

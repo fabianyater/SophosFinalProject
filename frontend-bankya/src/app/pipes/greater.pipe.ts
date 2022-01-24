@@ -10,7 +10,7 @@ export class GreaterPipe implements PipeTransform {
     if (value == 'Deposit') {
       this.message = '+';
     }
-    if (value == 'Withdraw' || value == 'Transfer') {
+    if (value == 'Withdraw' ) {
       this.message = '-';
     }
     

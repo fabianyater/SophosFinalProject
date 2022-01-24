@@ -38,6 +38,14 @@ public class ProductModel {
 			"client_created_at", "client_document_type", "client_document_number" })
 	private ClientModel client_id;
 
+	public ProductModel() {
+
+	}
+
+	public ProductModel(Integer product_id) {
+		this.product_id = product_id;
+	}
+
 	// Getters and setters
 
 	public Integer getProduct_id() {

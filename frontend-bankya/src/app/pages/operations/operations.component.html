@@ -113,7 +113,7 @@
           <td>{{operation.operation_id}}</td>
           <td>{{operation.operation_type}}</td>
           <td
-            [ngClass]="{'reducer': operation.operation_type == 'Withdraw' || operation.operation_type == 'Transfer', 'deposit': operation.operation_type == 'Deposit'}">
+            [ngClass]="{'reducer': operation.operation_type == 'Withdraw', 'deposit': operation.operation_type == 'Deposit'}">
             {{operation.operation_type | greater}}
             {{operation.operation_value}}</td>
           <td>{{operation.operation_balance}}</td>

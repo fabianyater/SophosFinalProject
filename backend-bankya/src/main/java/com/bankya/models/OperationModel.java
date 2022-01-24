@@ -29,21 +29,35 @@ public class OperationModel {
 
 	@Column(length = 150)
 	private String operation_description;
-	
+
 	@Column(length = 50)
 	private Integer account_number;
-	
+
 	@Column(length = 50)
 	private Double operation_balance;
-	
+
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number", "product_state"})
+	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number",
+			"product_state" })
 	private ProductModel product_id;
 
+	public OperationModel() {
+
+	}
+
+	public OperationModel(String operation_type, String operation_date, Double operation_value,
+			String operation_description, Integer account_number, Double operation_balance, ProductModel product_id) {
+		this.operation_type = operation_type;
+		this.operation_date = operation_date;
+		this.operation_value = operation_value;
+		this.operation_description = operation_description;
+		this.account_number = account_number;
+		this.operation_balance = operation_balance;
+		this.product_id = product_id;
+	}
+
 	// Getters and setter
-	
-	
-	
+
 	public Integer getOperation_id() {
 		return operation_id;
 	}

@@ -39,24 +39,19 @@ public class OperationRest {
 	@PostMapping
 	public ResponseEntity<OperationModel> addOperation(@RequestBody OperationModel operation) throws HandleException {
 		int id = operation.getProduct_id().getProduct_id();
-		int limite = 0;
+		int limit = 0;
 		double balance = operationService.findBalance(id);
 		double value = operation.getOperation_value();
 		String type = operationService.findProductType(id);
 		String state = operationService.findProductState(id);
 
-		System.out.println("Balance: " + balance);
-		System.out.println("Valor: " + value);
-		System.out.println("Tipo: " + type);
-
 		if (type.equalsIgnoreCase("checking account")) {
-			limite = -2000000;
+			limit = -2000000;
 		}
 
 		if (operation.getOperation_type().equalsIgnoreCase("withdraw")) {
 			double substract = balance - value;
-			if (substract < limite) {
-				// throw new HandleException("No puede retirar. Saldo insuficiente");
+			if (substract < limit) {
 				return ResponseEntity.badRequest().build();
 			}
 			if (state.equalsIgnoreCase("I") || state.equalsIgnoreCase("C")) {
@@ -83,11 +78,13 @@ public class OperationRest {
 				int account_number = operation.getAccount_number();
 				int receptor = operationService.findIdByAccountNumber(account_number);
 				double balanceRepector = operationService.findBalance(receptor);
+				OperationModel auxOperation;
+				ProductModel product = new ProductModel(receptor);
 
 				double add = balanceRepector + value;
 				double substract = balance - value;
 
-				if (substract < limite) {
+				if (substract < limit) {
 					throw new HandleException("No puede realizar la transacción, excedió el limite de sobregiro");
 				}
 
@@ -95,10 +92,16 @@ public class OperationRest {
 					throw new HandleException("Debe tener una cuenta activa para retirar.");
 				}
 
+
+				auxOperation = new OperationModel(operation.getOperation_type(), operation.getOperation_date(), value,
+						operation.getOperation_description(), operation.getAccount_number(), balanceRepector, product);
+
 				operation.setOperation_balance(balance - value);
+				auxOperation.setOperation_balance(balanceRepector + value);
 				operationService.addAmmount(receptor, add);
 				operationService.substractAmmount(id, substract);
-				
+				operationService.save(auxOperation);
+
 			} catch (Exception he) {
 				throw new HandleException("Error");
 			}
@@ -119,8 +122,6 @@ public class OperationRest {
 	public Iterable<OperationModel> getProductOperations(@PathVariable("id") Integer id, ProductModel product) {
 
 		String productType = operationService.findProductType(id);
-
-		System.out.println("****************" + productType);
 
 		Iterable<OperationModel> oOperation = operationService.findProductOperations(id, productType);
 
