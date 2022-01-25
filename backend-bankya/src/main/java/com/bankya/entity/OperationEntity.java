@@ -1,4 +1,4 @@
-package com.bankya.models;
+package com.bankya.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "operation")
-public class OperationModel {
+public class OperationEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,14 +39,14 @@ public class OperationModel {
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JsonIgnoreProperties(value = { "product_type", "product_created_at", "client_id", "product_number",
 			"product_state" })
-	private ProductModel product_id;
+	private ProductEntity product_id;
 
-	public OperationModel() {
+	public OperationEntity() {
 
 	}
 
-	public OperationModel(String operation_type, String operation_date, Double operation_value,
-			String operation_description, Integer account_number, Double operation_balance, ProductModel product_id) {
+	public OperationEntity(String operation_type, String operation_date, Double operation_value,
+			String operation_description, Integer account_number, Double operation_balance, ProductEntity product_id) {
 		this.operation_type = operation_type;
 		this.operation_date = operation_date;
 		this.operation_value = operation_value;
@@ -78,11 +78,11 @@ public class OperationModel {
 		this.account_number = account_number;
 	}
 
-	public ProductModel getProduct_id() {
+	public ProductEntity getProduct_id() {
 		return product_id;
 	}
 
-	public void setProduct_id(ProductModel product_id) {
+	public void setProduct_id(ProductEntity product_id) {
 		this.product_id = product_id;
 	}
 

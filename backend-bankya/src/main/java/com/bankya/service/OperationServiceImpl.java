@@ -1,4 +1,4 @@
-package com.bankya.services;
+package com.bankya.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,29 +7,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bankya.dao.OperationDao;
-import com.bankya.models.OperationModel;
-import com.bankya.models.ProductModel;
+import com.bankya.entity.OperationEntity;
+import com.bankya.entity.ProductEntity;
+import com.bankya.repository.OperationRepository;
 
 @Service
-public class OperationServiceImplementation implements OperationService {
+public class OperationServiceImpl implements OperationService {
 	@Autowired
-	OperationDao operationDao;
+	OperationRepository operationDao;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Iterable<OperationModel> findAll() {
+	public Iterable<OperationEntity> findAll() {
 		return operationDao.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<OperationModel> findById(Integer id) {
+	public Optional<OperationEntity> findById(Integer id) {
 		return operationDao.findById(id);
 	}
 
 	@Override
-	public OperationModel save(OperationModel operation) {
+	public OperationEntity save(OperationEntity operation) {
 		return operationDao.save(operation);
 	}
 
@@ -69,7 +69,7 @@ public class OperationServiceImplementation implements OperationService {
 	}
 
 	@Override
-	public List<OperationModel> findProductOperations(Integer id, String type) {
+	public List<OperationEntity> findProductOperations(Integer id, String type) {
 		return operationDao.findProductOperations(id, type);
 	}
 

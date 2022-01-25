@@ -1,17 +1,17 @@
-package com.bankya.services;
+package com.bankya.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.bankya.models.OperationModel;
-import com.bankya.models.ProductModel;
+import com.bankya.entity.OperationEntity;
+import com.bankya.entity.ProductEntity;
 
 public interface OperationService {
-	public Iterable<OperationModel> findAll();
+	public Iterable<OperationEntity> findAll();
 
-	public Optional<OperationModel> findById(Integer id);
+	public Optional<OperationEntity> findById(Integer id);
 
-	public OperationModel save(OperationModel operation);
+	public OperationEntity save(OperationEntity operation);
 
 	public void deleteById(int id);
 	
@@ -27,6 +27,6 @@ public interface OperationService {
 	
 	public String findProductState(Integer id);
 	
-	public List<OperationModel> findProductOperations(Integer id, String type);
+	public List<OperationEntity> findProductOperations(Integer id, String type);
 	
 }

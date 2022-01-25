@@ -1,4 +1,4 @@
-package com.bankya.rest;
+package com.bankya.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,25 +19,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bankya.dao.OperationDao;
-import com.bankya.models.OperationModel;
-import com.bankya.models.ProductModel;
-import com.bankya.services.OperationService;
-import com.bankya.services.ProductService;
-
-import exceptions.HandleException;
+import com.bankya.entity.OperationEntity;
+import com.bankya.entity.ProductEntity;
+import com.bankya.model.GeneralResponse;
+import com.bankya.repository.OperationRepository;
+import com.bankya.service.OperationService;
+import com.bankya.service.ProductService;
 
 @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST,
 		RequestMethod.DELETE })
 @RestController
 @RequestMapping("api/v1/operations")
-public class OperationRest {
+public class OperationController {
 
 	@Autowired
 	private OperationService operationService;
 
 	@PostMapping
-	public ResponseEntity<OperationModel> addOperation(@RequestBody OperationModel operation) throws HandleException {
+	public ResponseEntity<OperationEntity> addOperation(@RequestBody OperationEntity operation) throws GeneralResponse {
 		int id = operation.getProduct_id().getProduct_id();
 		int limit = 0;
 		double balance = operationService.findBalance(id);
@@ -55,7 +54,7 @@ public class OperationRest {
 				return ResponseEntity.badRequest().build();
 			}
 			if (state.equalsIgnoreCase("I") || state.equalsIgnoreCase("C")) {
-				throw new HandleException("Debe tener una cuenta activa para retirar.");
+				throw new GeneralResponse("Debe tener una cuenta activa para retirar.");
 			}
 			operation.setOperation_balance(balance - value);
 			operationService.substractAmmount(id, substract);
@@ -64,7 +63,7 @@ public class OperationRest {
 		if (operation.getOperation_type().equalsIgnoreCase("deposit")) {
 
 			if (state.equalsIgnoreCase("C")) {
-				throw new HandleException("Debe tener una cuenta activa para retirar.");
+				throw new GeneralResponse("Debe tener una cuenta activa para retirar.");
 			}
 
 			operation.setOperation_balance(balance + value);
@@ -78,22 +77,22 @@ public class OperationRest {
 				int account_number = operation.getAccount_number();
 				int receptor = operationService.findIdByAccountNumber(account_number);
 				double balanceRepector = operationService.findBalance(receptor);
-				OperationModel auxOperation;
-				ProductModel product = new ProductModel(receptor);
+				OperationEntity auxOperation;
+				ProductEntity product = new ProductEntity(receptor);
 
 				double add = balanceRepector + value;
 				double substract = balance - value;
 
 				if (substract < limit) {
-					throw new HandleException("No puede realizar la transacción, excedió el limite de sobregiro");
+					throw new GeneralResponse("No puede realizar la transacción, excedió el limite de sobregiro");
 				}
 
 				if (state.equalsIgnoreCase("I") || state.equalsIgnoreCase("C")) {
-					throw new HandleException("Debe tener una cuenta activa para retirar.");
+					throw new GeneralResponse("Debe tener una cuenta activa para retirar.");
 				}
 
 
-				auxOperation = new OperationModel(operation.getOperation_type(), operation.getOperation_date(), value,
+				auxOperation = new OperationEntity(operation.getOperation_type(), operation.getOperation_date(), value,
 						operation.getOperation_description(), operation.getAccount_number(), balanceRepector, product);
 
 				operation.setOperation_balance(balance - value);
@@ -103,7 +102,7 @@ public class OperationRest {
 				operationService.save(auxOperation);
 
 			} catch (Exception he) {
-				throw new HandleException("Error");
+				throw new GeneralResponse("Error");
 			}
 
 		}
@@ -112,25 +111,25 @@ public class OperationRest {
 	}
 
 	@GetMapping
-	public List<OperationModel> getAll() {
-		List<OperationModel> lOperation = StreamSupport.stream(operationService.findAll().spliterator(), false)
+	public List<OperationEntity> getAll() {
+		List<OperationEntity> lOperation = StreamSupport.stream(operationService.findAll().spliterator(), false)
 				.collect(Collectors.toList());
 		return lOperation;
 	}
 
 	@GetMapping("/product/{id}")
-	public Iterable<OperationModel> getProductOperations(@PathVariable("id") Integer id, ProductModel product) {
+	public Iterable<OperationEntity> getProductOperations(@PathVariable("id") Integer id, ProductEntity product) {
 
 		String productType = operationService.findProductType(id);
 
-		Iterable<OperationModel> oOperation = operationService.findProductOperations(id, productType);
+		Iterable<OperationEntity> oOperation = operationService.findProductOperations(id, productType);
 
 		return oOperation;
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<OperationModel> getOperationById(@PathVariable("id") Integer id) {
-		Optional<OperationModel> oOperation = operationService.findById(id);
+	public ResponseEntity<OperationEntity> getOperationById(@PathVariable("id") Integer id) {
+		Optional<OperationEntity> oOperation = operationService.findById(id);
 		if (!oOperation.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}

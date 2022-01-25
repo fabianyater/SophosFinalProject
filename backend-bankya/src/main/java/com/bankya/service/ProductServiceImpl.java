@@ -1,4 +1,4 @@
-package com.bankya.services;
+package com.bankya.service;
 
 import java.util.Optional;
 
@@ -6,29 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bankya.dao.ProductDao;
-import com.bankya.models.ProductModel;
+import com.bankya.entity.ProductEntity;
+import com.bankya.repository.ProductRepository;
 
 @Service
-public class ProductServiceImplementation implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	ProductDao productDao;
+	ProductRepository productDao;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Iterable<ProductModel> findAll() {
+	public Iterable<ProductEntity> findAll() {
 		return productDao.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<ProductModel> findById(int id) {
+	public Optional<ProductEntity> findById(int id) {
 		return productDao.findById(id);
 	}
 
 	@Override
-	public ProductModel save(ProductModel product) {
+	public ProductEntity save(ProductEntity product) {
 		return productDao.save(product);
 	}
 
@@ -38,13 +38,8 @@ public class ProductServiceImplementation implements ProductService {
 	}
 
 	@Override
-	public Iterable<ProductModel> findClientProducts(Integer id) {
+	public Iterable<ProductEntity> findClientProducts(Integer id) {
 		return productDao.findClientProducts(id);
-	}
-
-	@Override
-	public Optional<ProductModel> updateProductState(Integer id, String value) {
-		return productDao.updateProductState(id, value);
 	}
 
 

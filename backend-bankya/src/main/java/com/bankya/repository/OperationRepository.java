@@ -1,4 +1,4 @@
-package com.bankya.dao;
+package com.bankya.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.bankya.models.OperationModel;
-import com.bankya.models.ProductModel;
+import com.bankya.entity.OperationEntity;
+import com.bankya.entity.ProductEntity;
 
-public interface OperationDao extends JpaRepository<OperationModel, Integer> {
+public interface OperationRepository extends JpaRepository<OperationEntity, Integer> {
 	// @Query("UPDATE product p set product_ammount = 1.800000 WHERE p.product_id =
 	// :id" )
 	@Query("select p.product_ammount from product p where p.product_id = :id")
@@ -39,5 +39,5 @@ public interface OperationDao extends JpaRepository<OperationModel, Integer> {
 	String findProductState(@Param("id") Integer id);
 	
 	@Query("SELECT op FROM product p INNER JOIN operation op ON p.product_id = op.product_id where p.product_id = :id and p.product_type = :type")
-	List<OperationModel> findProductOperations(@Param("id") Integer id, @Param("type") String type);
+	List<OperationEntity> findProductOperations(@Param("id") Integer id, @Param("type") String type);
 }

@@ -1,4 +1,4 @@
-package com.bankya.models;
+package com.bankya.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "product")
-public class ProductModel {
+public class ProductEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,14 +36,26 @@ public class ProductModel {
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JsonIgnoreProperties(value = { "client_name", "client_lastname", "client_email", "client_birthday",
 			"client_created_at", "client_document_type", "client_document_number" })
-	private ClientModel client_id;
+	private CustomerEntity client_id;
 
-	public ProductModel() {
+	public ProductEntity() {
 
 	}
 
-	public ProductModel(Integer product_id) {
+	public ProductEntity(Integer product_id) {
 		this.product_id = product_id;
+	}
+
+	public ProductEntity(Integer product_id, String product_type, Integer product_number, String product_state,
+			Double product_ammount, String product_created_at, CustomerEntity client_id) {
+		super();
+		this.product_id = product_id;
+		this.product_type = product_type;
+		this.product_number = product_number;
+		this.product_state = product_state;
+		this.product_ammount = product_ammount;
+		this.product_created_at = product_created_at;
+		this.client_id = client_id;
 	}
 
 	// Getters and setters
@@ -96,11 +108,11 @@ public class ProductModel {
 		this.product_ammount = product_ammount;
 	}
 
-	public ClientModel getClient_id() {
+	public CustomerEntity getClient_id() {
 		return client_id;
 	}
 
-	public void setClient_id(ClientModel client_id) {
+	public void setClient_id(CustomerEntity client_id) {
 		this.client_id = client_id;
 	}
 
