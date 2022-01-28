@@ -1,11 +1,11 @@
 package com.bankya.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.bankya.entity.OperationEntity;
 import com.bankya.entity.ProductEntity;
 import com.bankya.repository.ProductRepository;
 
@@ -13,34 +13,52 @@ import com.bankya.repository.ProductRepository;
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	ProductRepository productDao;
+	ProductRepository productRepository;
 
 	@Override
-	@Transactional(readOnly = true)
-	public Iterable<ProductEntity> findAll() {
-		return productDao.findAll();
+	public ProductEntity save(ProductEntity product) throws Exception {
+		return productRepository.save(product);
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public Optional<ProductEntity> findById(int id) {
-		return productDao.findById(id);
+	public ProductEntity findById(int id) throws Exception {
+		return productRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public ProductEntity save(ProductEntity product) {
-		return productDao.save(product);
+	public List<OperationEntity> findProductOperations(Integer id, String type) throws Exception {
+		return productRepository.findProductOperations(id, type);
 	}
 
 	@Override
-	public void deleteById(int id) {
-		productDao.deleteById(id);
+	public String findProductState(Integer id) throws Exception {
+		return productRepository.findProductState(id);
 	}
 
 	@Override
-	public Iterable<ProductEntity> findClientProducts(Integer id) {
-		return productDao.findClientProducts(id);
+	public String findProductType(Integer id) throws Exception {
+		return productRepository.findProductType(id);
 	}
 
+	@Override
+	public Integer findIdByAccountNumber(Integer id) throws Exception {
+		return productRepository.findIdByAccountNumber(id);
+	}
+
+	@Override
+	public Double findBalance(Integer id) throws Exception {
+		return productRepository.findBalance(id);
+	}
+
+	@Override
+	public void addAmmount(Integer id, Double value) throws Exception {
+		productRepository.addAmmount(id, value);
+	}
+
+	@Override
+	public void substractAmmount(Integer id, Double value) throws Exception {
+		productRepository.substractAmmount(id, value);
+		
+	}
 
 }

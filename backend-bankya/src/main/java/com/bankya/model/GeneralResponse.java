@@ -11,6 +11,24 @@ public class GeneralResponse<T> implements Serializable {
 	private T data;
 	private boolean success;
 	private String message;
+	private int errorCode;
+	private String messageResult;
+	
+	public int getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getMessageResult() {
+		return messageResult;
+	}
+
+	public void setMessageResult(String messageResult) {
+		this.messageResult = messageResult;
+	}
 
 	public T getData() {
 		return data;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankya.entity.CustomerEntity;
+import com.bankya.entity.ProductEntity;
 import com.bankya.model.GeneralResponse;
 import com.bankya.service.CustomerService;
 
@@ -35,15 +36,12 @@ public class CustomerController {
 		String message = "";
 
 		try {
-
 			data = customerService.save(customer);
 			message = "Customer succesfully created";
-
 			response.setMessage(message);
 			response.setSuccess(true);
 			response.setData(data);
 			status = HttpStatus.CREATED;
-
 		} catch (Exception e) {
 			message = "Something has failed. Please contact suuport.";
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -63,8 +61,16 @@ public class CustomerController {
 
 		try {
 			data = customerService.findAll();
-			message = "It found " + data.size() + " customers.";
 
+			if (data.isEmpty()) {
+				response.setErrorCode(1);
+				response.setMessageResult("No registered customers");
+			} else {
+				response.setErrorCode(0);
+				response.setMessageResult("It found " + data.size() + " customers.");
+			}
+
+			message = "Successful transaction.";
 			response.setMessage(message);
 			response.setSuccess(true);
 			response.setData(data);
@@ -91,8 +97,16 @@ public class CustomerController {
 		try {
 
 			data = customerService.findById(id);
-			message = "Customer succesfully found";
 
+			if (data == null || data.getCustomer_id() == null) {
+				response.setErrorCode(1);
+				response.setMessageResult("Customer not found");
+			} else {
+				response.setErrorCode(0);
+				response.setMessageResult("Customer with id: " + data.getCustomer_id() + " succesfully found");
+			}
+
+			message = "Succesful transaction";
 			response.setMessage(message);
 			response.setSuccess(true);
 			response.setData(data);
@@ -105,7 +119,91 @@ public class CustomerController {
 			response.setSuccess(false);
 		}
 		return new ResponseEntity<>(response, status);
+	}
 
+	@GetMapping("/{customerId}/products")
+	public ResponseEntity<GeneralResponse<List<ProductEntity>>> getCustomerProducts(
+			@PathVariable("customerId") Integer customerId) {
+
+		GeneralResponse<List<ProductEntity>> response = new GeneralResponse<>();
+		HttpStatus status = null;
+		List<ProductEntity> data = null;
+		CustomerEntity customer = null;
+		String message = "";
+
+		try {
+			customer = customerService.findById(customerId);
+
+			if (customer == null || customer.getCustomer_id() == null) {
+				response.setErrorCode(1);
+				response.setMessageResult("Customer not found");
+			} else {
+				data = customerService.findCustomerProducts(customerId);
+				if (data.isEmpty()) {
+					response.setErrorCode(1);
+					response.setMessageResult("No registered products for customer: " + customerId);
+				} else {
+					response.setErrorCode(0);
+					response.setMessageResult("It found " + data.size() + " products from customer: " + customerId);
+				}
+			}
+
+			message = "Successful transaction";
+			response.setMessage(message);
+			response.setSuccess(true);
+			response.setData(data);
+			status = HttpStatus.OK;
+
+		} catch (Exception e) {
+			message = "Something has failed. Please contact suuport.";
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.setMessage(message);
+			response.setSuccess(false);
+
+		}
+		return new ResponseEntity<>(response, status);
+	}
+
+	@GetMapping("/{customerId}/products/{productId}")
+	public ResponseEntity<GeneralResponse<ProductEntity>> getCustomerProductById(
+			@PathVariable("customerId") Integer customerId, @PathVariable("productId") Integer productId) {
+
+		GeneralResponse<ProductEntity> response = new GeneralResponse<>();
+		HttpStatus status = null;
+		ProductEntity data = null;
+		CustomerEntity customer = null;
+		String message = "";
+
+		try {
+			customer = customerService.findById(customerId);
+
+			if (customer == null || customer.getCustomer_id() == null) {
+				response.setErrorCode(1);
+				response.setMessageResult("Customer not found");
+			} else {
+				data = customerService.findCustomerProductById(customerId, productId);
+				if (data == null || data.getProduct_id() == null) {
+					response.setErrorCode(1);
+					response.setMessageResult("Product not found");
+				} else {
+					response.setErrorCode(0);
+					response.setMessageResult("Product with id: " + productId + " succesfully found");
+				}
+			}
+
+			message = "Successful transaction";
+			response.setMessage(message);
+			response.setSuccess(true);
+			response.setData(data);
+			status = HttpStatus.OK;
+
+		} catch (Exception e) {
+			message = "Something has failed. Please contact suuport.";
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.setMessage(message);
+			response.setSuccess(false);
+		}
+		return new ResponseEntity<>(response, status);
 	}
 
 	@PutMapping("/{id}")
@@ -153,25 +251,27 @@ public class CustomerController {
 		GeneralResponse<Integer> response = new GeneralResponse<>();
 		HttpStatus status = null;
 		List<String> customerProductStates = null;
-		String message = "";
-		
+
 		try {
 			customerProductStates = customerService.findCustomerProductsStateById(id);
 
-			if (!customerProductStates.contains("A") || !customerProductStates.contains("I")) {
+			if (customerProductStates.contains("A") || customerProductStates.contains("I")) {
+				response.setErrorCode(1);
+				response.setMessageResult("Can't delete a customer with active or inactive products");
+			} else {
 				customerService.deleteById(id);
-				message = "Customer succesfully deleted";
-
-				response.setMessage(message);
-				response.setSuccess(true);
-				response.setData(id);
-				status = HttpStatus.OK;
+				response.setErrorCode(0);
+				response.setMessageResult("Customer succesfully deleted");
 			}
 
+			response.setMessage("Successful transaction");
+			response.setSuccess(true);
+			response.setData(id);
+			status = HttpStatus.OK;
+
 		} catch (Exception e) {
-			message = "Something has failed. Please contact suuport.";
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			response.setMessage(message);
+			response.setMessage("Something has failed. Please contact suuport.");
 			response.setSuccess(false);
 		}
 

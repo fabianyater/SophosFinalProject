@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bankya.entity.CustomerEntity;
+import com.bankya.entity.ProductEntity;
 import com.bankya.repository.CustomerRepository;
 
 @Service
@@ -21,16 +22,15 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.findAll();
 	}
 
-	
 	@Override
 	public CustomerEntity findById(int id) throws Exception {
-		return customerRepository.findById(id).get();
+		return customerRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public CustomerEntity save(CustomerEntity client) throws Exception {
-		return customerRepository.save(client);
+	public CustomerEntity save(CustomerEntity customer) throws Exception {
+		return customerRepository.save(customer);
 	}
 
 	@Override
@@ -41,6 +41,18 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<String> findCustomerProductsStateById(Integer id) throws Exception {
 		return customerRepository.findCustomerProductsStateById(id);
+	}
+
+
+	@Override
+	public List<ProductEntity> findCustomerProducts(Integer id) throws Exception{
+		return customerRepository.findCuctomerProducts(id);
+	}
+
+
+	@Override
+	public ProductEntity findCustomerProductById(Integer customerId, Integer productId) throws Exception {
+		return customerRepository.findCustomerProductById(customerId, productId);
 	}
 
 }

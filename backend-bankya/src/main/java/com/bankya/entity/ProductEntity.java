@@ -34,9 +34,9 @@ public class ProductEntity {
 	private String product_created_at;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JsonIgnoreProperties(value = { "client_name", "client_lastname", "client_email", "client_birthday",
-			"client_created_at", "client_document_type", "client_document_number" })
-	private CustomerEntity client_id;
+	@JsonIgnoreProperties(value = { "customer_name", "customer_lastname", "customer_email", "customer_birthday",
+			"customer_created_at", "customer_document_type", "customer_document_number" })
+	private CustomerEntity customer_id;
 
 	public ProductEntity() {
 
@@ -47,7 +47,7 @@ public class ProductEntity {
 	}
 
 	public ProductEntity(Integer product_id, String product_type, Integer product_number, String product_state,
-			Double product_ammount, String product_created_at, CustomerEntity client_id) {
+			Double product_ammount, String product_created_at, CustomerEntity customer_id) {
 		super();
 		this.product_id = product_id;
 		this.product_type = product_type;
@@ -55,7 +55,7 @@ public class ProductEntity {
 		this.product_state = product_state;
 		this.product_ammount = product_ammount;
 		this.product_created_at = product_created_at;
-		this.client_id = client_id;
+		this.customer_id = customer_id;
 	}
 
 	// Getters and setters
@@ -108,12 +108,12 @@ public class ProductEntity {
 		this.product_ammount = product_ammount;
 	}
 
-	public CustomerEntity getClient_id() {
-		return client_id;
+	public CustomerEntity getCustomer_id() {
+		return customer_id;
 	}
 
-	public void setClient_id(CustomerEntity client_id) {
-		this.client_id = client_id;
+	public void setCustomer_id(CustomerEntity customer_id) {
+		this.customer_id = customer_id;
 	}
 
 }

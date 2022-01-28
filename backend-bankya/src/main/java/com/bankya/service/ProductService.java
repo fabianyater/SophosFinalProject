@@ -1,17 +1,27 @@
 package com.bankya.service;
 
-import java.util.Optional;
+import java.util.List;
 
+import com.bankya.entity.OperationEntity;
 import com.bankya.entity.ProductEntity;
 
 public interface ProductService {
-	public Iterable<ProductEntity> findAll();
 
-	public Optional<ProductEntity> findById(int id);
+	public ProductEntity findById(int id) throws Exception;
 
-	public ProductEntity save(ProductEntity product);
-
-	public void deleteById(int id);
+	public ProductEntity save(ProductEntity product) throws Exception;
 	
-	public Iterable<ProductEntity> findClientProducts(Integer id);
+	public List<OperationEntity> findProductOperations(Integer id, String type) throws Exception;
+	
+	public String findProductState(Integer id) throws Exception;
+	
+	public String findProductType(Integer id) throws Exception;
+	
+	public Integer findIdByAccountNumber(Integer id) throws Exception;
+	
+	public Double findBalance(Integer id) throws Exception;
+	
+	public void addAmmount(Integer id, Double value) throws Exception;
+	
+	public void substractAmmount(Integer id, Double value) throws Exception;
 }

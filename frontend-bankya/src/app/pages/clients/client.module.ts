@@ -7,10 +7,10 @@ import { ClientsComponent } from './list-clients/clients.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { AddClientComponent } from './add-client/add-client.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StatePipePipe } from 'src/app/pipes/state-pipe.pipe';
+import { StatePipePipe } from 'src/app/shared/pipes/state-pipe.pipe';
 import { OperationsComponent } from '../operations/operations.component';
-import { ValePipe } from 'src/app/pipes/vale.pipe';
-import { GreaterPipe } from 'src/app/pipes/greater.pipe';
+import { ValePipe } from 'src/app/shared/pipes/vale.pipe';
+import { GreaterPipe } from 'src/app/shared/pipes/greater.pipe';
 
 const routes: Routes = [
   {
