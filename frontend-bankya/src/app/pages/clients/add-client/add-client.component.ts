@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ClientModel } from 'src/app/models/client-model';
+import { CustomerModel } from 'src/app/customers/models/customer.model';
 import { ClientServiceService } from 'src/app/services/client-service.service';
 
 @Component({
@@ -13,10 +13,10 @@ import { ClientServiceService } from 'src/app/services/client-service.service';
 export class AddClientComponent implements OnInit {
   datePipe: DatePipe = new DatePipe('en-En');
   formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
-  arrayClient: Array<ClientModel> = [];
+  arrayClient: Array<CustomerModel> = [];
   submitted: boolean = false;
   registerForm!: FormGroup;
-  client!: ClientModel;
+  client!: CustomerModel;
   public documents = [
     { type: 'Cédula de ciudadanía' },
     { type: 'Cédula Extranjería' },
@@ -25,7 +25,7 @@ export class AddClientComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private clientService: ClientServiceService
+    //private clientService: ClientServiceService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class AddClientComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-    this.clientService.addClient(this.registerForm.value).subscribe();
+    //this.clientService.addClient(this.registerForm.value).subscribe();
     location.href = '/';
   }
 

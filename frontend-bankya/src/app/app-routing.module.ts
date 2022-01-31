@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ListComponent } from './customers/components/list/list.component';
+
 const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () =>
-      import('./pages/clients/client.module').then((m) => m.ClientModule),
-  },
-  { path: '**', redirectTo: '/clients', pathMatch: 'full' },
+  { path: '', redirectTo: 'customers', pathMatch: 'full' },
+  { path: 'customers', component: ListComponent },
 ];
 
 @NgModule({

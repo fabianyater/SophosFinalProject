@@ -4,11 +4,11 @@ export interface ProductModel {
   product_number: number;
   product_state: string;
   product_type: string;
-  client_id: ClientID;
+  customer_id: CustomerID;
 }
 
-interface ClientID {
-  client_id: number;
+interface CustomerID {
+  customer_id: number;
 }
 
 

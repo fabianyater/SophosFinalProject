@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-import { ClientModel } from 'src/app/models/client-model';
-import { ClientServiceService } from 'src/app/services/client-service.service';
-import { nose, ProductModel } from 'src/app/models/product.model';
+import { CustomerModel } from 'src/app/customers/models/customer.model';
+//import { ClientServiceService } from 'src/app/services/client-service.service';
+import { nose, ProductModel } from 'src/app/accounts/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -19,14 +19,14 @@ export class ClientDetailsComponent implements OnInit {
   public stringFormat: string = 'yyyy-MM-dd hh:mm:ss';
   public formattedDate = this.datePipe.transform(new Date(), this.stringFormat);
   public products: Array<ProductModel> = [];
-  public client: ClientModel | undefined;
+  public client: CustomerModel | undefined;
   public submitted: boolean = false;
   public _form!: FormGroup;
   public types = [{ type: 'Checking Account' }, { type: 'Savings Account' }];
   public icon = faEdit;
 
   constructor(
-    public clientService: ClientServiceService,
+    //public clientService: ClientServiceService,
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
@@ -72,9 +72,9 @@ export class ClientDetailsComponent implements OnInit {
   }
 
   getClientById(id: any): void {
-    this.clientService.getClientById(id).subscribe((client) => {
-      this.client = client;
-    });
+    //this.clientService.getClientById(id).subscribe((client) => {
+    //  this.client = client;
+    //});
   }
 
   deleteClient(clientId: number) {
@@ -84,7 +84,7 @@ export class ClientDetailsComponent implements OnInit {
           this.route.snapshot.paramMap.get('id')
         )}`);
       } else {
-        return this.clientService.deleteClient(clientId).subscribe(() => {});
+       // return this.clientService.deleteClient(clientId).subscribe(() => {});
       }
     });
     location.href = '/';

@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col">
+    <div class="navbar mb-3 mt-3">
+      <h1>Customers</h1>
+      <!--  <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Número documento" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form> -->
+      <button
+        type="button"
+        class="btn btn-outline-success"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Add a new Customer
+      </button>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Add a new Customer
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- <app-add-client></app-add-client> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="customers.length == 0; else customersTable">
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No records</h4>
+        <p>
+          There are no customers registered in the system. Try to register in
+          the registration form.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #customersTable>
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Document type</th>
+        <th scope="col">Document number</th>
+        <th scope="col">Birthday</th>
+        <th scope="col">Created at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.customer_id }}</td>
+        <td>{{ customer.customer_name }} {{ customer.customer_lastname }}</td>
+        <td>{{ customer.customer_email }}</td>
+        <td>{{ customer.customer_document_type }}</td>
+        <td>{{ customer.customer_document_number }}</td>
+        <td>{{ customer.customer_birthday }}</td>
+        <td>{{ customer.customer_created_at }}</td>
+        <td>
+          <button
+            class="btn btn-outline-primary"
+            (click)="goTo(customer.customer_id)"
+          >
+            See more
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

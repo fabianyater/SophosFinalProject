@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { OperationModel } from 'src/app/models/operations-model';
-import { ProductModel } from 'src/app/models/product.model';
+import { OperationModel } from 'src/app/accounts/models/operations.model';
+import { ProductModel } from 'src/app/accounts/models/product.model';
 import { OperationsService } from 'src/app/services/operations.service';
 import { ProductService } from 'src/app/services/product.service';
 import { map } from 'rxjs';
@@ -76,10 +76,10 @@ export class OperationsComponent implements OnInit {
       .addOperation(this.registerForm.value)
       .pipe(
         map((data) => {
-          
+
           if (data === null) {
             return window.alert("Saldo insuficiente");
-          } 
+          }
           return data;
         })
       );
