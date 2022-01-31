@@ -24,10 +24,10 @@ public class ProductEntity {
 	@Column(length = 50, nullable = false)
 	private Integer product_number;
 
-	@Column(length = 50, nullable = false, columnDefinition = "ENUM('A','I','C') DEFAULT 'A'")
+	@Column(length = 50, nullable = false, columnDefinition = "VARCHAR(50) DEFAULT 'A'")
 	private String product_state;
 
-	@Column(length = 10, nullable = false, columnDefinition = "DOUBLE DEFAULT 0")
+	@Column(length = 10, nullable = false, columnDefinition = "NUMERIC DEFAULT 0")
 	private Double product_ammount;
 
 	@Column(nullable = false)
