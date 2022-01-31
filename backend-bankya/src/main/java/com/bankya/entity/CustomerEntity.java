@@ -1,10 +1,15 @@
 package com.bankya.entity;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity(name = "customer")
 public class CustomerEntity {
@@ -29,17 +34,18 @@ public class CustomerEntity {
 	private String customer_document_number;
 
 	@Column(columnDefinition = "DATE", nullable = false)
-	private String customer_birthday;
+	private Date customer_birthday;
 
 	@Column(columnDefinition = "TIMESTAMP", nullable = false)
-	private String customer_created_at;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+	private Timestamp customer_created_at;
 		
 	public CustomerEntity() {
 	}
 
 	public CustomerEntity(Integer customer_id, String customer_name, String customer_lastname, String customer_email,
-			String customer_document_type, String customer_document_number, String customer_birthday,
-			String customer_created_at) {
+			String customer_document_type, String customer_document_number, Date customer_birthday,
+			Timestamp customer_created_at) {
 		super();
 		this.customer_id = customer_id;
 		this.customer_name = customer_name;
@@ -99,19 +105,19 @@ public class CustomerEntity {
 		this.customer_document_number = customer_document_number;
 	}
 
-	public String getCustomer_birthday() {
+	public Date getCustomer_birthday() {
 		return customer_birthday;
 	}
 
-	public void setCustomer_birthday(String customer_birthday) {
+	public void setCustomer_birthday(Date customer_birthday) {
 		this.customer_birthday = customer_birthday;
 	}
 
-	public String getCustomer_created_at() {
+	public Timestamp getCustomer_created_at() {
 		return customer_created_at;
 	}
 
-	public void setCustomer_created_at(String customer_created_at) {
+	public void setCustomer_created_at(Timestamp customer_created_at) {
 		this.customer_created_at = customer_created_at;
 	}
 	
