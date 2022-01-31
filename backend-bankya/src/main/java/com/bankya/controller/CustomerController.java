@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankya.entity.CustomerEntity;
@@ -20,7 +21,7 @@ import com.bankya.entity.ProductEntity;
 import com.bankya.model.GeneralResponse;
 import com.bankya.service.CustomerService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
 @RestController
 @RequestMapping("customers")
 public class CustomerController {
