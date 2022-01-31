@@ -15,6 +15,8 @@ import { CustomersModule } from './customers/customers.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CoreModule,
+    CustomersModule
   ],
   providers: [],
   bootstrap: [AppComponent],
