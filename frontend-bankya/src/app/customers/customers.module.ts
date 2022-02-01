@@ -1,7 +1,7 @@
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListComponent } from './components/list/list.component';
+import { ListComponent } from './components/listCustomer/list.component';
 import { AddComponent } from './components/add/add.component';
 
 
