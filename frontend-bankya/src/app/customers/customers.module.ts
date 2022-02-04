@@ -3,17 +3,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './components/listCustomer/list.component';
 import { AddComponent } from './components/add/add.component';
-
+import { ListCustomerProductsComponent } from './components/list-customer-products/list-customer-products.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
-    AddComponent
+    AddComponent,
+    ListCustomerProductsComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class CustomersModule { }

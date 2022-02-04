@@ -51,8 +51,7 @@ export class AddComponent implements OnInit {
       return;
     }
     this.customerService.addCustomer(this.registerForm.value).subscribe();
-    console.log(this.registerForm.value)
-    this.router.navigate(['/h'])
+    this.router.navigate(['/'])
   }
 
   onReset() {

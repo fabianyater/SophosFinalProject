@@ -57,7 +57,7 @@ public class CustomerController {
 
 		GeneralResponse<List<CustomerEntity>> response = new GeneralResponse<>();
 		HttpStatus status = null;
-		List<CustomerEntity> data = null;
+		List<CustomerEntity> data;
 		String message = "";
 
 		try {

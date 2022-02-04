@@ -1,0 +1,61 @@
+<nav class="navbar">
+  <div class="container-fluid" *ngIf="customer">
+    <ul style="display: flex; flex-direction: row; align-items: center; padding: 0;">
+      <button class="btn btn-success" (click)="back()">Back to customers list</button>
+      <h1 style="margin: 0 10px 0 10px;">{{customer.customer_name | uppercase}} {{customer.customer_lastname | uppercase}}</h1>
+    </ul>
+    <div class="d-flex padding: 0;">
+      <h2 style="margin: 0;">PRODUCTS</h2>
+    </div>
+  </div>
+</nav>
+<div class="row">
+  <div class="row col-9">
+    <div *ngIf="products?.length == 0;else productCards">
+      <div
+      class="alert alert-warning"
+      role="alert"
+    >
+      <h4 class="alert-heading">{{ message }}</h4>
+      <p>
+        {{ messageResult }}
+      </p>
+    </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #productCards>
+  <div class="col-sm-6" *ngFor="let products of products;">
+    <div class="card w-100" [ngClass]="{
+        'l-bg-blue-dark': products.product_type === 'Checking Account',
+        'l-bg-green-dark': products.product_type === 'Savings Account'
+      }" style="width: 18rem;">
+      <div class="card-body">
+        <div>
+          <div class="custom">
+            <h2 class="card-title m-0">Account</h2>
+            <h2 class="card-subtitle m-0">State</h2>
+          </div>
+          <div class="custom mb-4">
+            <h3 class="card-title m-0">{{products.product_type | slice: 0:8}} <span> <strong>
+                  #{{products.product_number}}</strong></span>
+            </h3>
+            <div class="custom">
+              <h3 class="card-subtitle m-0">{{products.product_state}}</h3>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4 class="card-subtitle m-0 text-end">Available balance</h4>
+          <h2 href="#" class="card-title m-0 text-end fs-2">{{products.product_ammount | currency}}</h2>
+        </div>
+        <hr>
+        <div class="text-center">
+          <a [ngClass]="{'text-muted': products.product_type === 'Cancelado'}" routerLink="['']" class="text-light fs-5"
+            (click)="goTo(products.customer_id.customer_id, products.product_id)">See operations</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

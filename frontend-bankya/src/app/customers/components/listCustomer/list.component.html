@@ -37,12 +37,15 @@
         </div>
       </div>
     </div>
-    <div *ngIf="customers.length == 0; else customersTable">
-      <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">No records</h4>
+    <div *ngIf="customers?.length == 0; else customersTable">
+      <div
+        [ngClass]="{ 'alert-warning': errorCode == 1 }"
+        class="alert"
+        role="alert"
+      >
+        <h4 class="alert-heading">{{ message }}</h4>
         <p>
-          There are no customers registered in the system. Try to register in
-          the registration form.
+          {{ messageResult }}
         </p>
       </div>
     </div>
