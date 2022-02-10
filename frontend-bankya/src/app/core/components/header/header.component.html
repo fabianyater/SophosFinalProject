@@ -1,10 +1,46 @@
 <nav class="navbar navbar-light bg-light shadow-sm bg-body rounded">
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="['/']">
-      <img src="../../../assets/img/Logo.svg" alt="Bankya Logo" width="60" height="60">
+      <img
+        src="../../../assets/img/Logo.svg"
+        alt="Bankya Logo"
+        width="60"
+        height="60"
+      />
     </a>
     <div class="d-flex">
-      <a class="navbar-brand mb-0 h1" [routerLink]="['/']">See customers</a>
+      <a *ngIf="isLogged" class="navbar-brand mb-0 h1" [routerLink]="['/']"
+        >See customers</a
+      >
+      <a
+        *ngIf="!isLogged"
+        class="navbar-brand mb-0 h1"
+        [routerLink]="['/login']"
+        >SignIn</a
+      >
+      <a
+        *ngIf="!isLogged"
+        class="navbar-brand mb-0 h1"
+        [routerLink]="['/register']"
+        >SignUp</a
+      >
     </div>
   </div>
 </nav>
+<main>
+  <main>
+    <div class="container-fluid" style="padding-top: 10px">
+      <div class="row">
+        <router-outlet>
+          <div *ngIf="isLogged; else isNotLogged">
+            <app-list></app-list>
+          </div>
+
+          <ng-template #isNotLogged>
+            <app-login (login)="authenticated($event)"></app-login>
+          </ng-template>
+        </router-outlet>
+      </div>
+    </div>
+  </main>
+</main>
