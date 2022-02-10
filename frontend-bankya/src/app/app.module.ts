@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,15 +11,10 @@ import { AppComponent } from './app.component';
 import { CustomersModule } from './customers/customers.module';
 import { HeaderModule } from './core/components/header/header.module';
 import { ProfileComponent } from './users/components/profile/profile.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
 import { AccountsModule } from './accounts/accounts.module';
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileComponent,
-    LoginComponent,
-    RegisterComponent,
   ],
   imports: [
     FormsModule,
@@ -28,6 +24,7 @@ import { AccountsModule } from './accounts/accounts.module';
     ReactiveFormsModule,
     HttpClientModule,
     HeaderModule,
+    AuthModule,
     CustomersModule,
     AccountsModule
   ],

@@ -23,7 +23,7 @@
           <a class="nav-link" [routerLink]="['/register']">SignUp</a>
         </li>
         <li *ngIf="isLogged" class="nav-item">
-          <a class="nav-link">{{username}}</a>
+          <a class="nav-link" [routerLink]="['/profile']">{{username}}</a>
         </li>
       </ul>
     </div>
