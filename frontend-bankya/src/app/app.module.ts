@@ -1,5 +1,5 @@
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -13,12 +13,18 @@ import { ProfileComponent } from './users/components/profile/profile.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 @NgModule({
-  declarations: [AppComponent, ProfileComponent, LoginComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    ProfileComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     HeaderModule,
     CustomersModule,

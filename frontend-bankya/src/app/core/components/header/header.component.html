@@ -1,10 +1,31 @@
 <nav class="navbar navbar-light bg-light shadow-sm bg-body rounded">
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="['/']">
-      <img src="../../../assets/img/Logo.svg" alt="Bankya Logo" width="60" height="60">
+      <img
+        src="../../../assets/img/Logo.svg"
+        alt="Bankya Logo"
+        width="60"
+        height="60"
+      />
     </a>
     <div class="d-flex">
-      <a class="navbar-brand mb-0 h1" [routerLink]="['/']">See customers</a>
+      <ul class="nav">
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/customers']">See customers</a>
+        </li>
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link" (click)="logout()" [routerLink]="['/']">Logout</a>
+        </li>
+        <li *ngIf="!isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/login']">SignIn</a>
+        </li>
+        <li *ngIf="!isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/register']">SignUp</a>
+        </li>
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link">{{username}}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

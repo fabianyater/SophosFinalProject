@@ -49,7 +49,8 @@ public class UserController {
 			user.setJwt(jwtUtils.generateToken(user.getUsername()));
 			user.setPassword(null);
 			messageResult = "Login successfull for user: " + user.getUsername() + ".";
-
+			
+			response.setToken(user.getJwt());
 			response.setMessageResult(messageResult);
 			response.setMessage("Operation successfull");
 			response.setErrorCode(1);

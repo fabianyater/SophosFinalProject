@@ -4,4 +4,5 @@ export class GeneralResponse<T> {
   message?: string;
   errorCode?: number;
   messageResult?: string;
+  token?: string;
 }

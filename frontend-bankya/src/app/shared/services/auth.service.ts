@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   public register(user: UserModel): Observable<GeneralResponse<UserModel>> {
-    return this.http.post(`${this.url}/users/register`, user);
+    return this.http.post(`${this.url}/users/create`, user);
   }
 
   public logOut() {
