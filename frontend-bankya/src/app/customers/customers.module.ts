@@ -5,16 +5,9 @@ import { ListComponent } from './components/listCustomer/list.component';
 import { AddComponent } from './components/add/add.component';
 import { ListCustomerProductsComponent } from './components/list-customer-products/list-customer-products.component';
 
-
 @NgModule({
-  declarations: [
-    ListComponent,
-    AddComponent,
-    ListCustomerProductsComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-  ],
+  declarations: [ListComponent, AddComponent, ListCustomerProductsComponent],
+  imports: [CommonModule, ReactiveFormsModule],
+  exports: [ListComponent, AddComponent, ListCustomerProductsComponent],
 })
-export class CustomersModule { }
+export class CustomersModule {}

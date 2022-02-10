@@ -74,7 +74,7 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<GeneralResponse<List<UserEntity>>> get() {
+	public ResponseEntity<GeneralResponse<List<UserEntity>>> getUser() {
 
 		GeneralResponse<List<UserEntity>> response = new GeneralResponse<>();
 		HttpStatus status = null;
