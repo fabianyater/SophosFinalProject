@@ -1,0 +1,33 @@
+<div class="row my-4">
+  <div class="col-md-12">
+    <form [formGroup]="_form">
+      <div class="mb-3">
+        <label for="_type" class="form-label">Account type</label>
+        <select
+          formControlName="product_type"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': form['product_type'].errors }"
+          id="_type"
+        >
+          <option [ngValue]="1" disabled>Seleccionar tipo de cuenta</option>
+          <option *ngFor="let type of types" [ngValue]="type.type">
+            {{ type.type }}
+          </option>
+        </select>
+        <div *ngIf="form['product_type'].errors" class="invalid-feedback">
+          <div *ngIf="form['product_type'].errors['required']">
+            The account type is required
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-success"
+        (click)="onSubmit()"
+        [disabled]="_form.invalid"
+      >
+        Send
+      </button>
+      <!-- <button type="submit" class="btn btn-success" [disabled]="_form.invalid">Registrar producto</button> -->
+    </form>
+  </div>
+</div>

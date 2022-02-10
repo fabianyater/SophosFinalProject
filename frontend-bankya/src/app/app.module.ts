@@ -12,6 +12,7 @@ import { HeaderModule } from './core/components/header/header.module';
 import { ProfileComponent } from './users/components/profile/profile.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { AccountsModule } from './accounts/accounts.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { RegisterComponent } from './auth/register/register.component';
     HttpClientModule,
     HeaderModule,
     CustomersModule,
+    AccountsModule
   ],
   providers: [
     {

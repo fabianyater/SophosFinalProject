@@ -1,3 +1,4 @@
+import { AccountsModule } from './../accounts/accounts.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,7 @@ import { ListCustomerProductsComponent } from './components/list-customer-produc
 
 @NgModule({
   declarations: [ListComponent, AddComponent, ListCustomerProductsComponent],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AccountsModule],
   exports: [ListComponent, AddComponent, ListCustomerProductsComponent],
 })
 export class CustomersModule {}

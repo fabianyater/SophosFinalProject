@@ -142,10 +142,8 @@ public class CustomerController {
 				data = customerService.findCustomerProducts(customerId);
 				if (data.isEmpty()) {
 					response.setErrorCode(1);
-					response.setMessageResult("No registered products for customer: " + customerId);
-				} else {
+					response.setMessageResult("No registered products for customer: " + customer.getCustomer_name() + customer.getCustomer_lastname());
 					response.setErrorCode(0);
-					response.setMessageResult("It found " + data.size() + " products from customer: " + customerId);
 				}
 			}
 
