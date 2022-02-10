@@ -13,7 +13,16 @@ public class GeneralResponse<T> implements Serializable {
 	private String message;
 	private int errorCode;
 	private String messageResult;
+	private String token;
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public int getErrorCode() {
 		return errorCode;
 	}

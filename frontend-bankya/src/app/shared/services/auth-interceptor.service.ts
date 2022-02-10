@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { GlobalService } from './global.service';
+import { AuthService } from './auth.service';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -13,34 +13,29 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class HttpConfigService implements HttpInterceptor {
-  constructor(private globalService: GlobalService, private router: Router) {}
+export class AuthInterceptorService implements HttpInterceptor {
+  constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token: string =
-      this.globalService.user && this.globalService.user.jwt;
-
     let request = req;
-
-    if (token) {
+    const token = this.authService.getToken();
+    if (token != null) {
       request = req.clone({
         setHeaders: {
           Authorization: token,
         },
       });
-      console.log(token);
     }
-
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 403) {
-          this.router.navigateByUrl('/customers');
-        }
-        return throwError(error);
+          if (error.status === 403) {
+              this.router.navigateByUrl('/login');
+          }
+          return throwError(error);
       })
-    );
+  );
   }
 }

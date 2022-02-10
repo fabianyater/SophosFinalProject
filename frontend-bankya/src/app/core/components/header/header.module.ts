@@ -1,31 +1,12 @@
-import { RegisterComponent } from './../register/register.component';
-import { LoginComponent } from './../login/login.component';
-import { ListCustomerProductsComponent } from './../../../customers/components/list-customer-products/list-customer-products.component';
-import { AddComponent } from './../../../customers/components/add/add.component';
-import { HeaderComponent } from './header.component';
-import { HeaderRoutingModule } from './header-routing.module';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListComponent } from 'src/app/customers/components/listCustomer/list.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { HeaderComponent } from './header.component';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    LoginComponent,
-    RegisterComponent,
-    ListComponent,
-    AddComponent,
-    ListCustomerProductsComponent,
-  ],
-  imports: [
-    FormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-    HeaderRoutingModule,
-  ],
-  exports: [
-    HeaderComponent
-  ],
+  declarations: [HeaderComponent],
+  imports: [CommonModule, RouterModule],
+  exports: [HeaderComponent],
 })
 export class HeaderModule {}

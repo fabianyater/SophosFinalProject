@@ -9,38 +9,23 @@
       />
     </a>
     <div class="d-flex">
-      <a *ngIf="isLogged" class="navbar-brand mb-0 h1" [routerLink]="['/']"
-        >See customers</a
-      >
-      <a
-        *ngIf="!isLogged"
-        class="navbar-brand mb-0 h1"
-        [routerLink]="['/login']"
-        >SignIn</a
-      >
-      <a
-        *ngIf="!isLogged"
-        class="navbar-brand mb-0 h1"
-        [routerLink]="['/register']"
-        >SignUp</a
-      >
+      <ul class="nav">
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/customers']">See customers</a>
+        </li>
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link" (click)="logout()" [routerLink]="['/']">Logout</a>
+        </li>
+        <li *ngIf="!isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/login']">SignIn</a>
+        </li>
+        <li *ngIf="!isLogged" class="nav-item">
+          <a class="nav-link" [routerLink]="['/register']">SignUp</a>
+        </li>
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link">{{username}}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
-<main>
-  <main>
-    <div class="container-fluid" style="padding-top: 10px">
-      <div class="row">
-        <router-outlet>
-          <div *ngIf="isLogged; else isNotLogged">
-            <app-list></app-list>
-          </div>
-
-          <ng-template #isNotLogged>
-            <app-login (login)="authenticated($event)"></app-login>
-          </ng-template>
-        </router-outlet>
-      </div>
-    </div>
-  </main>
-</main>

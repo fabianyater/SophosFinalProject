@@ -12,7 +12,10 @@ import { CustomerModel } from '../../models/customer.model';
 })
 export class AddComponent implements OnInit {
   datePipe: DatePipe = new DatePipe('en-En');
-  formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss.SSS');
+  formattedDate = this.datePipe.transform(
+    new Date(),
+    'yyyy-MM-dd HH:mm:ss.SSS'
+  );
   arrayClient: Array<CustomerModel> = [];
   submitted: boolean = false;
   registerForm!: FormGroup;
@@ -26,7 +29,7 @@ export class AddComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +54,8 @@ export class AddComponent implements OnInit {
       return;
     }
     this.customerService.addCustomer(this.registerForm.value).subscribe();
-    this.router.navigate(['/'])
+    //this.router.navigateByUrl('/customers')
+    window.location.reload();
   }
 
   onReset() {
