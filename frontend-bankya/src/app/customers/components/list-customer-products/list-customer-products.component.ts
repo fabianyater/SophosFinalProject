@@ -17,6 +17,7 @@ export class ListCustomerProductsComponent implements OnInit {
   public message: string | undefined = '';
   public messageResult: string | undefined = '';
   public errorCode: number = 0;
+  public userId!: number;
 
   constructor(
     private customerService: CustomerService,
@@ -27,42 +28,44 @@ export class ListCustomerProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      /* this.customerService.getCustomerById(params['id']).subscribe((resp) => {
+      this.customerService.getCustomerById(params['id']).subscribe((resp) => {
         if (resp.data) {
           this.customer = resp.data;
-          this.messageResult = resp.messageResult
         } else {
           if (resp.errorCode == 1) {
-            this.errorCode = resp.errorCode
-            this.message = resp.message
-            alert(resp.messageResult);
+            this.errorCode = resp.errorCode;
+            this.message = resp.message;
           }
         }
-      }); */
+      });
 
       this.customerService
         .getCustomerProducts(params['id'])
         .subscribe((resp) => {
-          if (resp.data) {
-            this.products = resp.data;
-          } else {
-            if (resp.errorCode == 1 || resp.data == null) {
-              alert(resp.messageResult);
-              this.router.navigate(['/']);
+          if (resp.success) {
+            if (resp.errorCode == 0) {
+              this.products = resp.data;
+              this.messageResult = resp.messageResult;
+            } else {
+              if (resp.errorCode == 1 || resp.data == null) {
+                this.message = resp.message;
+                this.messageResult = resp.messageResult;
+              }
             }
           }
         });
     });
+    this.route.params.subscribe(params => {
+      this.userId = params["id"]
+    })
+
   }
 
   back() {
-    this.location.back();
+    this.router.navigateByUrl('/customers');
   }
 
-  goTo(cId:number, id: number) {
-    console.log(cId, id);
-
+  goTo(cId: number, id: number) {
     this.router.navigate([`/customer/${cId}/products/${id}`]);
   }
-
 }

@@ -46,7 +46,6 @@ export class OperationsComponent implements OnInit {
       .getProductOperationsById(Number(this.route.snapshot.paramMap.get('id')))
       .subscribe((resp: any) => {
         this.operations = resp;
-        console.log('Operaciones:', this.operations);
       });
 
     this.registerForm = this.formBuilder.group({
@@ -85,19 +84,16 @@ export class OperationsComponent implements OnInit {
       );
 
     checkData.subscribe((resp) => {
-      console.log('Operación agregada: ', resp);
       window.location.reload();
     }); */
 
     this.operationService.addOperation(this.registerForm.value).subscribe(
       (resp) => {
-        console.log('Respuesta: ', resp);
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
         if (error.status == 400 || error.status === 500) {
           this.errorMessage = true;
-          console.log('aaaaaaaaaaaahh', this.errorMessage);
         }
       }
     );
@@ -116,22 +112,18 @@ export class OperationsComponent implements OnInit {
 
   updateState(id: any, product: ProductModel) {
     this.productService.updateProductState(id, product).subscribe((resp) => {
-      console.log('Actualizó gg', resp);
     });
     window.location.reload();
-    /* console.log('ID: ', id, ' Cuerpo: ', product); */
   }
 
   cancelProduct(id: any, product: ProductModel) {
     this.productService.cancelProduct(id, product).subscribe(
       (resp) => {
-        console.log('Cancelado', resp);
         window.location.href = '/';
       },
       (error: HttpErrorResponse) => {
         if (error.status == 400 || error.status === 500) {
           this.errorMessage2 = true;
-          console.log('aaaaaaaaaaaa', this.errorMessage);
         }
       }
     );

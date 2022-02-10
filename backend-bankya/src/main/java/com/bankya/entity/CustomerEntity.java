@@ -37,9 +37,9 @@ public class CustomerEntity {
 	private Date customer_birthday;
 
 	@Column(columnDefinition = "TIMESTAMP", nullable = false)
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private Timestamp customer_created_at;
-		
+
 	public CustomerEntity() {
 	}
 
@@ -120,6 +120,5 @@ public class CustomerEntity {
 	public void setCustomer_created_at(Timestamp customer_created_at) {
 		this.customer_created_at = customer_created_at;
 	}
-	
-	
+
 }

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from 'src/app/users/models/user.model';
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   username: string | undefined;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     if (this.authService.getToken()) {
@@ -25,8 +26,6 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.form).subscribe(
       (resp) => {
-        console.log(resp);
-
         let user: UserModel;
 
         this.authService.saveToken(resp.token!);
@@ -35,16 +34,12 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         user = JSON.parse(this.authService.getUser()!);
         this.username = user.username;
-        this.reloadPage();
+        this.router.navigateByUrl('/customers');
       },
       (error) => {
         this.errorMessage = error.error.message;
         this.isLoginFailed = true;
       }
     );
-  }
-
-  public reloadPage() {
-    window.location.reload();
   }
 }
