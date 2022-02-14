@@ -1,20 +1,26 @@
 <nav class="navbar navbar-light bg-light shadow-sm bg-body rounded">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/customers']">
-      <img
-        src="../../../assets/img/Logo.svg"
-        alt="Bankya Logo"
-        width="60"
-        height="60"
-      />
-    </a>
+    <ul class="nav" style="align-items: center">
+      <li class="nav-item">
+        <a class="navbar-brand nav-link" [routerLink]="['/customers']">
+          <img
+            src="../../../assets/img/Logo.svg"
+            alt="Bankya Logo"
+            width="60"
+            height="60"
+          />
+        </a>
+      </li>
+      <li class="nav item">
+        <a [routerLink]="['/customers']" class="nav-link active"
+          ><h1 style="margin: 0; padding: 0;">BankYa!</h1></a
+        >
+      </li>
+    </ul>
     <div class="d-flex">
       <ul class="nav">
         <li *ngIf="isLogged" class="nav-item">
           <a class="nav-link" [routerLink]="['/customers']">See customers</a>
-        </li>
-        <li *ngIf="isLogged" class="nav-item">
-          <a class="nav-link" (click)="logout()" [routerLink]="['/']">Logout</a>
         </li>
         <li *ngIf="!isLogged" class="nav-item">
           <a class="nav-link" [routerLink]="['/login']">SignIn</a>
@@ -23,7 +29,10 @@
           <a class="nav-link" [routerLink]="['/register']">SignUp</a>
         </li>
         <li *ngIf="isLogged" class="nav-item">
-          <a class="nav-link" [routerLink]="['/profile']">{{username}}</a>
+          <a class="nav-link" [routerLink]="['/profile']">{{ username }}</a>
+        </li>
+        <li *ngIf="isLogged" class="nav-item">
+          <a class="nav-link" (click)="logout()" [routerLink]="['/']">Logout</a>
         </li>
       </ul>
     </div>

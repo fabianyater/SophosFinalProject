@@ -6,6 +6,7 @@ import { ListCustomerProductsComponent } from './customers/components/list-custo
 
 import { ListComponent } from './customers/components/listCustomer/list.component';
 import { LoginComponent } from './auth/login/login.component';
+import { ListCustomersProductOperationsComponent } from './customers/components/list-customers-product-operations/list-customers-product-operations.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'customers', component: ListComponent },
   { path: 'customers/:id/products', component: ListCustomerProductsComponent },
+  { path: 'customers/:userId/products/:productId', component: ListCustomersProductOperationsComponent },
 ];
 
 @NgModule({

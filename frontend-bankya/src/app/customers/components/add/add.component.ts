@@ -16,10 +16,8 @@ export class AddComponent implements OnInit {
     new Date(),
     'yyyy-MM-dd HH:mm:ss.SSS'
   );
-  arrayClient: Array<CustomerModel> = [];
   submitted: boolean = false;
   registerForm!: FormGroup;
-  client!: CustomerModel;
   public documents = [
     { type: 'Cédula de ciudadanía' },
     { type: 'Cédula Extranjería' },
@@ -29,7 +27,6 @@ export class AddComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {

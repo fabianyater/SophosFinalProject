@@ -1,0 +1,48 @@
+<div
+  *ngFor="let product of products"
+  class="card w-100"
+  [ngClass]="{
+    'l-bg-blue-dark': product.product_type === 'Checking Account',
+    'l-bg-green-dark': product.product_type === 'Savings Account'
+  }"
+  style="width: 18rem"
+>
+  <div class="card-body">
+    <div>
+      <div class="custom">
+        <h2 class="card-title m-0">Account</h2>
+        <h2 class="card-subtitle m-0">State</h2>
+      </div>
+      <div class="custom mb-4">
+        <h3 class="card-title m-0">
+          {{ product.product_type | slice: 0:8 }}
+          <span>
+            <strong> #{{ product.product_number }}</strong></span
+          >
+        </h3>
+        <div class="custom">
+          <h3 class="card-subtitle m-0">
+            {{ product.product_state | statePipe }}
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4 class="card-subtitle m-0 text-end">Available balance</h4>
+      <h2 href="#" class="card-title m-0 text-end fs-2">
+        {{ product.product_ammount | currency }}
+      </h2>
+    </div>
+    <hr />
+    <div class="text-center">
+      <a
+        role="button"
+        [ngClass]="{ 'text-muted': product.product_type === 'Cancelado' }"
+        routerLink="['']"
+        class="text-light fs-5"
+        (click)="goTo(product.customer_id.customer_id, product.product_id)"
+        >See operations</a
+      >
+    </div>
+  </div>
+</div>

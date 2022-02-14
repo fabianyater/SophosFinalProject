@@ -1,0 +1,41 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div class="mb-3">
+    <label for="_value" class="form-label">Value</label>
+    <input
+      type="number"
+      min="0"
+      class="form-control"
+      formControlName="operation_value"
+      [ngClass]="{ 'is-invalid': form['operation_value'].errors }"
+      id="_value"
+    />
+    <div *ngIf="form['operation_value'].errors" class="invalid-feedback">
+      <div *ngIf="form['operation_value'].errors['required']">
+        Value is required
+      </div>
+    </div>
+    <div *ngIf="errorMessage == true" class="is-invalid" style="color: red">
+      Saldo insuficiente
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="operation_description"
+      placeholder="Opcional"
+      id="description"
+    />
+  </div>
+  <div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="registerForm.invalid"
+    >
+      Agree
+    </button>
+    <button type="button" class="btn btn-secondary">Cancel</button>
+  </div>
+</form>

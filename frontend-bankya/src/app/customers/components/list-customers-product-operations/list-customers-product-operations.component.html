@@ -1,0 +1,46 @@
+<nav class="navbar">
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    "
+  >
+    <ul
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+      "
+    >
+      <button class="btn btn-success" (click)="back()">Back</button>
+    </ul>
+
+    <div class="d-flex padding: 0;">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-outline-success">Deposit</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-danger">Withdraw</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-primary">Transfer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-3">
+    <app-list-product [product]="product"></app-list-product>
+  </div>
+  <div class="row col">
+    <app-list-product-operations
+      [productId]="productId"
+    ></app-list-product-operations>
+  </div>
+</div>

@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
 
   public logout() {
     this.authService.logOut();
-    this, (this.isLogged = false);
+    this.isLogged = false;
   }
 
   goTo(path: string) {

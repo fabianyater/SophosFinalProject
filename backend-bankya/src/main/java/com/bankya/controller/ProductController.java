@@ -286,6 +286,7 @@ public class ProductController {
 					response.setMessageResult("Deposit successfully completed");
 				}
 			}
+			System.out.println("Balance: " + balance);
 			message = "Successful transaction";
 			response.setMessage(message);
 			response.setSuccess(true);

@@ -1,0 +1,43 @@
+<div *ngIf="operations?.length == 0; else displayOperations">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">{{message}}</h4>
+    <h2>{{messageResult}}</h2>
+  </div>
+</div>
+
+<ng-template #displayOperations>
+  <div class="col">
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Operation type</th>
+          <th scope="col">$ Value</th>
+          <th scope="col">$ Balance</th>
+          <th scope="col">Description</th>
+          <th scope="col">Account number</th>
+          <th scope="col">Operation created at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let operation of operations">
+          <td>{{ operation.operation_id }}</td>
+          <td>{{ operation.operation_type }}</td>
+          <td
+            [ngClass]="{
+              reducer: operation.operation_type == 'Withdraw',
+              deposit: operation.operation_type == 'Deposit'
+            }"
+          >
+            {{ operation.operation_type | greater }}
+            {{ operation.operation_value }}
+          </td>
+          <td>{{ operation.operation_balance }}</td>
+          <td>{{ operation.operation_description }}</td>
+          <td>{{ operation.account_number }}</td>
+          <td>{{ operation.operation_date }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

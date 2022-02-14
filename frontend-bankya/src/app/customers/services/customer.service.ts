@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { CustomerModel } from '../models/customer.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GeneralResponse } from 'src/app/models/GeneralResponse';
@@ -37,6 +37,14 @@ export class CustomerService {
   ): Observable<GeneralResponse<ProductModel[]>> {
     return this.http.get<GeneralResponse<ProductModel[]>>(
       `${this.url}/customers/${id}/products`
+    );
+  }
+
+  public getCustomerProductsById(
+    userId: number, productId: number
+  ): Observable<GeneralResponse<ProductModel>> {
+    return this.http.get<GeneralResponse<ProductModel>>(
+      `${this.url}/customers/${userId}/products/${productId}`
     );
   }
 

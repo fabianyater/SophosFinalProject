@@ -1,0 +1,45 @@
+<div *ngIf="product">
+  <h2>
+    Account type:<strong> {{ product.product_type }} </strong>
+  </h2>
+  <h2>
+    Account number:<strong> #{{ product.product_number }} </strong>
+  </h2>
+  <h2>
+    State:<strong
+      class="badge"
+      [ngClass]="{
+        'bg-warning': product.product_state === 'I',
+        'bg-success': product.product_state === 'A',
+        'bg-secondary': product.product_state === 'C'
+      }"
+    >
+      {{ product.product_state | statePipe }}
+    </strong>
+  </h2>
+  <h2>
+    <strong style="font-size: 2rem">
+      {{ product.product_ammount | currency }}
+    </strong>
+  </h2>
+  <div style="display: flex; flex-direction: column">
+    <button
+      class="btn mb-2"
+      [ngClass]="{
+        'btn-success': product.product_state === 'I',
+        'btn-warning': product.product_state === 'A'
+      }"
+    >
+      Change state to {{ product.product_state | vale }}
+    </button>
+    <button class="btn btn-danger">Cancel account</button>
+    <div
+      class="is-invalid mt-4"
+      style="color: red"
+      *ngIf="errorMessage == true"
+    >
+      It is not possible to cancel a product with an available balance and a
+      Active or Inactive state.
+    </div>
+  </div>
+</div>

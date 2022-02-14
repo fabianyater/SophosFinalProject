@@ -1,6 +1,4 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ProductModel } from 'src/app/accounts/models/product.model';
 import { CustomerService } from 'src/app/customers/services/customer.service';
@@ -22,8 +20,7 @@ export class ListCustomerProductsComponent implements OnInit {
   constructor(
     private customerService: CustomerService,
     private route: ActivatedRoute,
-    private router: Router,
-    private readonly location: Location
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -54,18 +51,11 @@ export class ListCustomerProductsComponent implements OnInit {
             }
           }
         });
+      this.userId = params['id'];
     });
-    this.route.params.subscribe(params => {
-      this.userId = params["id"]
-    })
-
   }
 
   back() {
     this.router.navigateByUrl('/customers');
-  }
-
-  goTo(cId: number, id: number) {
-    this.router.navigate([`/customer/${cId}/products/${id}`]);
   }
 }
